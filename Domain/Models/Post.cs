@@ -1,8 +1,7 @@
 ﻿namespace Daira.Domain.Models
 {
-    public class Post
+    public class Post : BaseEntity
     {
-        public Guid Id { get; set; }
         public string UserId { get; set; }
         public string? Content { get; set; }
         public string? ImageUrl { get; set; }

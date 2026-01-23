@@ -13,10 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Persistence\Migrations\" />
-    <Folder Include="Repositories\" />
     <Folder Include="Services\" />
-    <Folder Include="Specefication\" />
-    <Folder Include="UnitOfWork\" />
   </ItemGroup>
 
   <ItemGroup>

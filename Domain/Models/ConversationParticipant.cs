@@ -1,8 +1,8 @@
 ﻿namespace Daira.Domain.Models
 {
-    public class ConversationParticipant
+    public class ConversationParticipant : BaseEntity
     {
-        public Guid Id { get; set; }
+
         public Guid ConversationId { get; set; }
         public string UserId { get; set; }
         public DateTime JoinedAt { get; set; } = DateTime.Now;

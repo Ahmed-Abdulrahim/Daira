@@ -8,5 +8,11 @@ global using Microsoft.AspNetCore.Identity;
 global using Microsoft.Extensions.Logging;
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
+global using Daira.Application.Interfaces;
+global using Daira.Infrastructure.Specefication;
+global using Domain.Models;
+global using System.Linq.Expressions;
+global using Daira.Infrastructure.Repositories.MainRepository;
+global using Microsoft.EntityFrameworkCore.Storage;
 
 

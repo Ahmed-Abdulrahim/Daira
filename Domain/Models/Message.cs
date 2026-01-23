@@ -1,8 +1,7 @@
 ﻿namespace Daira.Domain.Models
 {
-    public class Message
+    public class Message : BaseEntity
     {
-        public Guid Id { get; set; }
         public Guid ConversationId { get; set; }
         public string SenderId { get; set; }
         public string Content { get; set; }

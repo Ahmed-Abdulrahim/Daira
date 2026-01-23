@@ -7,9 +7,8 @@
         Declined,
         Blocked,
     }
-    public class Friendship
+    public class Friendship : BaseEntity
     {
-        public Guid Id { get; set; }
         public string RequesterId { get; set; }
         public string AddresseeId { get; set; }
         public RequestStatus Status { get; set; } = RequestStatus.Pending;

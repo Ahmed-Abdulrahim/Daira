@@ -1,8 +1,8 @@
 ﻿namespace Daira.Domain.Models
 {
-    public class Comment
+    public class Comment : BaseEntity
     {
-        public Guid Id { get; set; }
+
         public Guid PostId { get; set; }
         public string UserId { get; set; }
         public string Content { get; set; }

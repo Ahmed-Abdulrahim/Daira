@@ -5,9 +5,9 @@
         Direct,
         Group,
     }
-    public class Conversation
+    public class Conversation : BaseEntity
     {
-        public Guid Id { get; set; }
+
         public ConversationType Type { get; set; } = ConversationType.Direct;
         public string? Name { get; set; }
         public string CreatedById { get; set; }

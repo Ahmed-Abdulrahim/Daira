@@ -15,9 +15,9 @@
         FriendRequest,
         Message,
     }
-    public class Notification
+    public class Notification : BaseEntity
     {
-        public Guid Id { get; set; }
+
         public string UserId { get; set; }
         public string? ActorId { get; set; }
         public NotificationType Type { get; set; }
