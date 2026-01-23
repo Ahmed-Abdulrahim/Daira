@@ -1,0 +1,14 @@
+[
+  {
+    "UserEmail": "ahmed.ali@example.com",
+    "RoleName": "Guest"
+  },
+  {
+    "UserEmail": "sara.mohamed@example.com",
+    "RoleName": "User"
+  },
+  {
+    "UserEmail": "omar.hassan@example.com",
+    "RoleName": "Admin"
+  }
+]

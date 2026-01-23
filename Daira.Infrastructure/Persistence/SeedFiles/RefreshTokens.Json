@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "1d1d1d1d-1d1d-1d1d-1d1d-1d1d1d1d1d1d",
+    "UserId": "user-1",
+    "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.user1token.signature1",
+    "ExpiresAt": "2025-01-23T10:30:00Z",
+    "IsRevoked": false,
+    "CreatedAt": "2024-12-24T10:30:00Z"
+  },
+  {
+    "Id": "2e2e2e2e-2e2e-2e2e-2e2e-2e2e2e2e2e2e",
+    "UserId": "user-2",
+    "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.user2token.signature2",
+    "ExpiresAt": "2025-01-22T14:15:00Z",
+    "IsRevoked": false,
+    "CreatedAt": "2024-12-23T14:15:00Z"
+  },
+  {
+    "Id": "3f3f3f3f-3f3f-3f3f-3f3f-3f3f3f3f3f3f",
+    "UserId": "user-3",
+    "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.user3token.signature3",
+    "ExpiresAt": "2025-01-20T12:00:00Z",
+    "IsRevoked": false,
+    "CreatedAt": "2024-12-21T12:00:00Z"
+  }
+]

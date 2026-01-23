@@ -1,0 +1,23 @@
+[
+  {
+    "Id": "Role-3",
+    "Name": "Guest",
+    "NormalizedName": "GUEST",
+    "Description": "Unauthenticated user, can only view public content",
+    "ConcurrencyStamp": "guest-stamp"
+  },
+  {
+    "Id": "Role-2",
+    "Name": "User",
+    "NormalizedName": "USER",
+    "Description": "Authenticated user with full access to features",
+    "ConcurrencyStamp": "user-stamp"
+  },
+  {
+    "Id": "Role-1",
+    "Name": "Admin",
+    "NormalizedName": "ADMIN",
+    "Description": "System administrator with moderation capabilities",
+    "ConcurrencyStamp": "admin-stamp"
+  }
+]

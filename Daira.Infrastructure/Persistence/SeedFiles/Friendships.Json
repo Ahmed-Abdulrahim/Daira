@@ -1,0 +1,26 @@
+[
+    {
+        "Id": "ff11ff11-ff11-ff11-ff11-ff11ff11ff11",
+        "RequesterId": "user-1",
+        "AddresseeId": "user-2",
+        "Status": 1,
+        "CreatedAt": "2024-02-15T09:00:00Z",
+        "UpdatedAt": "2024-02-15T10:30:00Z"
+    },
+    {
+        "Id": "ff22ff22-ff22-ff22-ff22-ff22ff22ff22",
+        "RequesterId": "user-1",
+        "AddresseeId": "user-3",
+        "Status": 1,
+        "CreatedAt": "2024-03-10T12:00:00Z",
+        "UpdatedAt": "2024-03-10T14:20:00Z"
+    },
+    {
+        "Id": "ff33ff33-ff33-ff33-ff33-ff33ff33ff33",
+        "RequesterId": "user-3",
+        "AddresseeId": "user-2",
+        "Status": 0,
+        "CreatedAt": "2024-12-15T14:00:00Z",
+        "UpdatedAt": "2024-12-15T14:00:00Z"
+    }
+]

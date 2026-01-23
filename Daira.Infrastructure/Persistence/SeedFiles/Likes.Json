@@ -1,0 +1,20 @@
+[
+    {
+        "Id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+        "PostId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "UserId": "user-2",
+        "CreatedAt": "2024-12-20T10:35:00Z"
+    },
+    {
+        "Id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+        "PostId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "UserId": "user-3",
+        "CreatedAt": "2024-12-20T10:40:00Z"
+    },
+    {
+        "Id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+        "PostId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "UserId": "user-1",
+        "CreatedAt": "2024-12-19T14:20:00Z"
+    }
+]

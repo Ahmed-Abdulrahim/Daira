@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1",
+    "ConversationId": "c1c1c1c1-c1c1-c1c1-c1c1-c1c1c1c1c1c1",
+    "SenderId": "user-1",
+    "Content": "Hey Sara! How are you doing?",
+    "IsRead": true,
+    "CreatedAt": "2024-12-22T14:00:00Z"
+  },
+  {
+    "Id": "a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2",
+    "ConversationId": "c1c1c1c1-c1c1-c1c1-c1c1-c1c1c1c1c1c1",
+    "SenderId": "user-2",
+    "Content": "Hi Ahmed! I'm great, thanks!",
+    "IsRead": true,
+    "CreatedAt": "2024-12-22T14:15:00Z"
+  },
+  {
+    "Id": "a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3",
+    "ConversationId": "c1c1c1c1-c1c1-c1c1-c1c1-c1c1c1c1c1c1",
+    "SenderId": "user-1",
+    "Content": "That's awesome! 😊",
+    "IsRead": false,
+    "CreatedAt": "2024-12-22T14:30:00Z"
+  }
+]

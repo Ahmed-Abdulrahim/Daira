@@ -1,0 +1,26 @@
+[
+    {
+        "Id": "c1c1c1c1-c1c1-c1c1-c1c1-c1c1c1c1c1c1",
+        "Type": 0,
+        "Name": null,
+        "CreatedById": "user-1",
+        "CreatedAt": "2024-02-16T10:00:00Z",
+        "UpdatedAt": "2024-12-22T14:30:00Z"
+    },
+    {
+        "Id": "c2c2c2c2-c2c2-c2c2-c2c2-c2c2c2c2c2c2",
+        "Type": 0,
+        "Name": null,
+        "CreatedById": "user-2",
+        "CreatedAt": "2024-03-10T11:00:00Z",
+        "UpdatedAt": "2024-12-21T16:45:00Z"
+    },
+    {
+        "Id": "c3c3c3c3-c3c3-c3c3-c3c3-c3c3c3c3c3c3",
+        "Type": 1,
+        "Name": "Tech Team",
+        "CreatedById": "user-3",
+        "CreatedAt": "2024-06-01T14:00:00Z",
+        "UpdatedAt": "2024-12-22T18:00:00Z"
+    }
+]

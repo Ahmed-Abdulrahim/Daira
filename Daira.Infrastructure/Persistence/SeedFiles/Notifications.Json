@@ -1,0 +1,35 @@
+[
+  {
+    "Id": "1a1a1a1a-1a1a-1a1a-1a1a-1a1a1a1a1a1a",
+    "UserId": "user-1",
+    "ActorId": "user-2",
+    "Type": 0,
+    "TargetId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "TargetType": 0,
+    "Content": "Sara liked your post",
+    "IsRead": true,
+    "CreatedAt": "2024-12-20T10:35:00Z"
+  },
+  {
+    "Id": "2b2b2b2b-2b2b-2b2b-2b2b-2b2b2b2b2b2b",
+    "UserId": "user-1",
+    "ActorId": "user-2",
+    "Type": 1,
+    "TargetId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "TargetType": 1,
+    "Content": "Sara commented on your post",
+    "IsRead": true,
+    "CreatedAt": "2024-12-20T11:15:00Z"
+  },
+  {
+    "Id": "3c3c3c3c-3c3c-3c3c-3c3c-3c3c3c3c3c3c",
+    "UserId": "user-2",
+    "ActorId": "user-3",
+    "Type": 3,
+    "TargetId": null,
+    "TargetType": 2,
+    "Content": "Omar sent you a friend request",
+    "IsRead": false,
+    "CreatedAt": "2024-12-22T09:00:00Z"
+  }
+]
