@@ -8,6 +8,15 @@
             {
                 opt.UseSqlServer(configuration.GetConnectionString("conn1"));
             });
+            services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
+
+            }).AddEntityFrameworkStores<DairaDbContext>().AddDefaultTokenProviders();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<AuthUseCase>();
             return services;
         }
     }

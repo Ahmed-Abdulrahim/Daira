@@ -1,3 +1,14 @@
 ﻿global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Daira.Infrastructure.Persistence.DbContext;
+global using Daira.Application.Interfaces;
+global using Daira.Application.Interfaces.Services;
+global using Daira.Application.UseCases;
+global using Daira.Domain.Models.AuthModel;
+global using Daira.Infrastructure.Repositories;
+global using Daira.Infrastructure.Services;
+global using Microsoft.AspNetCore.Identity;
+global using Daira.Application.DTOs.UserDto;
+global using Daira.Application.UseCases;
+global using Microsoft.AspNetCore.Mvc;
+global using System.Threading.Tasks;

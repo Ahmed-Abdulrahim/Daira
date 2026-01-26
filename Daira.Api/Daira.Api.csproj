@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Errors\" />
     <Folder Include="Middlewares\" />
   </ItemGroup>
