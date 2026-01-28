@@ -155,7 +155,7 @@
             var roles = await userManager.GetRolesAsync(existenceEmail);
             var accessToken = tokenService.GenerateAccessToken(existenceEmail, roles);
             var refreshToken = tokenService.GenerateRefreshToken();
-
+            await userManager.UpdateAsync(existenceEmail);
             return new UserResponseDto
             {
                 Success = true,

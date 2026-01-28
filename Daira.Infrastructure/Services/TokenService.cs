@@ -23,10 +23,10 @@
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["JwtSettings:Issuer"] ?? "AuthSystem",
-                audience: _configuration["JwtSettings:Audience"] ?? "AuthSystemUsers",
+                issuer: _configuration["JwtOptions:issuer"] ?? "AuthSystem",
+                audience: _configuration["JwtOptions:audience"] ?? "AuthSystemUsers",
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(int.Parse(_configuration["JwtSettings:AccessTokenExpirationMinutes"] ?? "60")),
+                expires: DateTime.Now.AddMinutes(int.Parse("60")),
                 signingCredentials: credentials
             );
 
@@ -71,11 +71,11 @@
         }
         public DateTime GetTokenExpirationTime()
         {
-            return DateTime.UtcNow.AddMinutes(int.Parse(_configuration["JwtSettings:AccessTokenExpirationMinutes"] ?? "60"));
+            return DateTime.Now.AddMinutes(int.Parse("60"));
         }
         public int GetRefreshTokenExpirationDays()
         {
-            return int.Parse(_configuration["JwtSettings:RefreshTokenExpirationDays"] ?? "7");
+            return int.Parse("7");
         }
     }
 
