@@ -221,6 +221,36 @@ namespace Daira.Application.Services
             };
 
         }
+
+        public async Task<UserResponseDto> ConfirmEmailAsync(string userId, string token)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return new UserResponseDto
+                {
+                    Success = false,
+                    Message = "User not found"
+                };
+            }
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+
+            if (!result.Succeeded)
+            {
+                return new UserResponseDto
+                {
+                    Success = false,
+                    Message = "Email confirmation failed"
+                };
+            }
+
+            return new UserResponseDto
+            {
+                Success = true,
+                Message = "Email confirmed successfully"
+            };
+        }
     }
 
 }

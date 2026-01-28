@@ -7,6 +7,7 @@
         Task<UserResponseDto> RefreshTokenAsync(RefreshTokenDto refreshTokenDto);
         Task<bool> RevokeTokenAsync(string userId);
         Task<UserResponseDto> ChangePasswordAsync(string userId, ChangePasswordDto changePasswordDto);
+        public Task<UserResponseDto> ConfirmEmailAsync(string userId, string token);
 
     }
 }

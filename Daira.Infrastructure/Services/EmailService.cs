@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Daira.Application.DTOs.AuthDto;
+using Microsoft.AspNetCore.Identity;
+using System.Net;
 using System.Net.Mail;
 
 namespace Daira.Infrastructure.Services
@@ -73,5 +75,8 @@ namespace Daira.Infrastructure.Services
 
             await SendEmailAsync(email, subject, body);
         }
+
+
+
     }
 }

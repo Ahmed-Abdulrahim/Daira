@@ -85,7 +85,25 @@
             return Ok(new { message = "Token revoked successfully" });
         }
 
+        [HttpGet("confirm-email")]
+        [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { message = "Invalid request" });
+            }
 
+            var result = await authService.ConfirmEmailAsync(userId, token);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
     }
 }
 
