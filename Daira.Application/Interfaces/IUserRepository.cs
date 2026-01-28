@@ -2,8 +2,10 @@
 {
     public interface IUserRepository
     {
-        public Task<bool> FindByEmailAsync(string email);
-        public Task<bool> FindByUserNameAsync(string userName);
-        public Task<AppUser?> CreateUser(AppUser user, string password);
+        Task<AppUser?> GetByIdAsync(string id);
+        Task<AppUser?> GetByEmailAsync(string email);
+        Task<IEnumerable<AppUser>> GetAllAsync();
+        Task<bool> ExistsAsync(string email);
+        Task UpdateAsync(AppUser user);
     }
 }

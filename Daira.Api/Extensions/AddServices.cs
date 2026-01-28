@@ -1,4 +1,6 @@
-﻿namespace Daira.Api.Extensions
+﻿using Daira.Application.Services;
+
+namespace Daira.Api.Extensions
 {
     public static class AddServices
     {
@@ -14,9 +16,10 @@
                 options.SignIn.RequireConfirmedEmail = true;
 
             }).AddEntityFrameworkStores<DairaDbContext>().AddDefaultTokenProviders();
-            services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<AuthUseCase>();
+            // services.AddScoped<AuthUseCase>();
             return services;
         }
     }

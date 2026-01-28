@@ -1,8 +1,11 @@
 ﻿namespace Daira.Application.Interfaces.Services
 {
-    public interface ITokenGenerator
+    public interface ITokenService
     {
-        public Task<string> GenerateJwtToken(AppUser user);
+        string GenerateAccessToken(AppUser user, IList<string> roles);
+        string GenerateRefreshToken();
+        ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);
+        DateTime GetTokenExpirationTime();
 
     }
 }

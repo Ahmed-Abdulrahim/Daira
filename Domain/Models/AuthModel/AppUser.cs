@@ -1,6 +1,6 @@
 ﻿namespace Daira.Domain.Models.AuthModel
 {
-    public class AppUser : IdentityUser<string>
+    public class AppUser : IdentityUser
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
@@ -10,8 +10,10 @@
         public bool IsVerified { get; set; } = false;
         public bool IsPrivate { get; set; } = false;
         public bool IsActive { get; set; } = true;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
 
         //Navigation Properties
         public List<Post> Posts { get; set; }

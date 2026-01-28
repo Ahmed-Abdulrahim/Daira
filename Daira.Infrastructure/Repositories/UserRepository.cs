@@ -1,11 +1,36 @@
 ﻿namespace Daira.Infrastructure.Repositories
 {
-    public class UserRepository(UserManager<AppUser> userManager) : IUserRepository
+    public class UserRepository(DairaDbContext _context) : IUserRepository
     {
-        public async Task<AppUser?> CreateUser(AppUser user, string password) => await userManager.CreateAsync(user, password) is IdentityResult result && result.Succeeded ? user : null;
+        public async Task<AppUser?> GetByIdAsync(string id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
 
-        public async Task<bool> FindByEmailAsync(string email) => await userManager.FindByEmailAsync(email) is not null;
-        public async Task<bool> FindByUserNameAsync(string userName) => await userManager.FindByNameAsync(userName) is not null;
+        public async Task<AppUser?> GetByEmailAsync(string email)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email);
+        }
 
+        public async Task<IEnumerable<AppUser>> GetAllAsync()
+        {
+            return await _context.Users
+                .Where(u => u.IsActive)
+                .ToListAsync();
+        }
+
+        public async Task<bool> ExistsAsync(string email)
+        {
+            return await _context.Users
+                .AnyAsync(u => u.Email == email);
+        }
+
+        public async Task UpdateAsync(AppUser user)
+        {
+            user.UpdatedAt = DateTime.UtcNow;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }

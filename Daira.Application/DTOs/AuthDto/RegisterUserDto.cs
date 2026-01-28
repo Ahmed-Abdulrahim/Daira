@@ -1,4 +1,4 @@
-﻿namespace Daira.Application.DTOs.UserDto
+﻿namespace Daira.Application.DTOs.AuthDto
 {
     public class RegisterUserDto
     {
@@ -21,7 +21,7 @@
         public string LastName { get; set; }
 
 
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "FirstName Must be Between 3 and 20 Character")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "FirstName Must be Between 3 and 100 Character")]
         public string? Bio { get; set; }
 
         [StringLength(20, MinimumLength = 3, ErrorMessage = "FirstName Must be Between 3 and 100 Character")]

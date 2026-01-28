@@ -17,6 +17,7 @@ namespace Daira.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.ApplyServices(builder.Configuration);
+            builder.Services.AddAuthorizeSwaggerAsync(builder.Configuration);
 
             var app = builder.Build();
             await app.ApplyMigrationWithSeed();
