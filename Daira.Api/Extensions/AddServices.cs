@@ -17,6 +17,7 @@ namespace Daira.Api.Extensions
 
             }).AddEntityFrameworkStores<DairaDbContext>().AddDefaultTokenProviders();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
             // services.AddScoped<AuthUseCase>();

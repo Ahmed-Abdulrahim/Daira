@@ -1,6 +1,10 @@
-﻿namespace Daira.Application.Services
+﻿using Daira.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+
+namespace Daira.Application.Services
 {
-    public class AuthService(UserManager<AppUser> userManager, ITokenService tokenService) : IAuthService
+    public class AuthService(UserManager<AppUser> userManager, ITokenService tokenService, IEmailService emailService, IConfiguration configuration) : IAuthService
     {
         public async Task<UserResponseDto> RegisterAsync(RegisterUserDto registerDto)
         {
@@ -40,7 +44,17 @@
             }
 
             await userManager.AddToRoleAsync(user, "User");
+            var emailToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = $"{configuration["AppUrl"]}/api/auth/confirm-email?userId={user.Id}&token={Uri.EscapeDataString(emailToken)}";
 
+            try
+            {
+                await emailService.SendEmailConfirmationAsync(user.Email, callbackUrl);
+            }
+            catch (Exception)
+            {
+
+            }
             var roles = await userManager.GetRolesAsync(user);
             var accessToken = tokenService.GenerateAccessToken(user, roles);
             var refreshToken = tokenService.GenerateRefreshToken();
