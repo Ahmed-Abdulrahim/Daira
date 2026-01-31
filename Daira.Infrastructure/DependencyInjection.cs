@@ -1,4 +1,6 @@
-﻿namespace Daira.Infrastructure
+﻿using Daira.Infrastructure.Services.AuthService;
+
+namespace Daira.Infrastructure
 {
     public static class DependencyInjection
     {
@@ -7,7 +9,7 @@
 
             services.AddDbContext<DairaDbContext>(options =>
            options.UseSqlServer(
-               configuration.GetConnectionString("DefaultConnection"),
+               configuration.GetConnectionString("conn1"),
                b => b.MigrationsAssembly(typeof(DairaDbContext).Assembly.FullName)));
 
             // Configure ASP.NET Core Identity with ApplicationRole
@@ -74,7 +76,9 @@
             services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.SectionName));
 
             // Register services
-
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             // Add HttpContextAccessor for CurrentUserService
             services.AddHttpContextAccessor();

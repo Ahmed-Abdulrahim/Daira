@@ -304,6 +304,7 @@ namespace Daira.Infrastructure.Persistence.Migrations
                     Token = table.Column<string>(type: "nvarchar(500)", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsRevoked = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    RevokedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
                 },
                 constraints: table =>

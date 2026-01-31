@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Daira.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DairaDbContext))]
-    [Migration("20260122202147_CreateDataBase")]
+    [Migration("20260131164530_CreateDataBase")]
     partial class CreateDataBase
     {
         /// <inheritdoc />
@@ -169,6 +169,9 @@ namespace Daira.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Token")
                         .IsRequired()

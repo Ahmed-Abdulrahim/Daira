@@ -14,6 +14,7 @@
             {
                 Succeeded = true,
                 Message = "Email confirmed successfully, You Can Now Login",
+
             };
         }
 
@@ -27,24 +28,22 @@
             };
         }
 
-        public static ConfirmEmailResponse AlreadyConfirmed(string email)
+        public static ConfirmEmailResponse AlreadyConfirmed()
         {
             return new ConfirmEmailResponse
             {
                 Succeeded = true,
-                Email = email,
-                Message = "Email is already confirmed.",
+                Message = "Email address has already been confirmed."
             };
         }
 
-        public static ConfirmEmailResponse Failure(string email, List<string> errors)
+        public static ConfirmEmailResponse Failure(string message)
         {
             return new ConfirmEmailResponse
             {
                 Succeeded = false,
-                Message = "Email confirmation failed.",
-                Email = email,
-                Error = errors
+                Message = message,
+                Error = new List<string> { message }
             };
         }
     }

@@ -4,26 +4,8 @@
     {
         public static IServiceCollection AddAuthorizeSwaggerAsync(this IServiceCollection service, IConfiguration configuration)
         {
-            service.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ClockSkew = TimeSpan.Zero,
-                    ValidIssuer = configuration["JwtOptions:issuer"],
-                    ValidAudience = configuration["JwtOptions:audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("secretKey") ?? configuration["JwtOptions:secretKey"]!))
-                };
-
-            });
-
+            // Authentication is already configured in AddInfrastructureServices
+            // This extension only adds Swagger with JWT authorization support
 
             service.AddSwaggerGen(c =>
             {
