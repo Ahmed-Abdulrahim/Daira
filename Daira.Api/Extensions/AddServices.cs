@@ -1,6 +1,4 @@
-﻿
-
-namespace Daira.Api.Extensions
+﻿namespace Daira.Api.Extensions
 {
     public static class AddServices
     {

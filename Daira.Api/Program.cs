@@ -1,5 +1,3 @@
-using Daira.Api.Middlewares;
-
 namespace Daira.Api
 {
     public class Program
@@ -14,7 +12,8 @@ namespace Daira.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.ApplyServices(builder.Configuration);
+            // builder.Services.ApplyServices(builder.Configuration);
+            builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddAuthorizeSwaggerAsync(builder.Configuration);
             builder.Services.AddApplicationServices();
             var app = builder.Build();

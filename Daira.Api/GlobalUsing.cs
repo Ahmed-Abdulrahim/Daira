@@ -15,3 +15,5 @@ global using Daira.Api.Errors;
 global using Domain.Exceptions;
 global using System.Net;
 global using System.Text.Json;
+global using Daira.Api.Middlewares;
+global using Daira.Infrastructure;
