@@ -7,10 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Mapping\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <PackageReference Include="AutoMapper" Version="13.0.1" />
 	  <PackageReference Include="FluentValidation" Version="12.1.1" />
 	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />

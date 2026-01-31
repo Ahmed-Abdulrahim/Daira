@@ -1,7 +1,3 @@
-
-using Daira.Api.Extensions;
-using System.Threading.Tasks;
-
 namespace Daira.Api
 {
     public class Program
@@ -18,7 +14,7 @@ namespace Daira.Api
             builder.Services.AddSwaggerGen();
             builder.Services.ApplyServices(builder.Configuration);
             builder.Services.AddAuthorizeSwaggerAsync(builder.Configuration);
-
+            builder.Services.AddApplicationServices();
             var app = builder.Build();
             await app.ApplyMigrationWithSeed();
             // Configure the HTTP request pipeline.
