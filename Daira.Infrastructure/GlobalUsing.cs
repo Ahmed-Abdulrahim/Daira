@@ -14,7 +14,6 @@ global using Domain.Models;
 global using System.Linq.Expressions;
 global using Daira.Infrastructure.Repositories.MainRepository;
 global using Microsoft.EntityFrameworkCore.Storage;
-global using Daira.Application.Interfaces.Services;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.IdentityModel.Tokens;
 global using System.IdentityModel.Tokens.Jwt;

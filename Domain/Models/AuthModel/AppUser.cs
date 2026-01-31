@@ -12,9 +12,7 @@
         public bool IsActive { get; set; } = true;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
-        public string? RefreshToken { get; set; }
-        public DateTime? RefreshTokenExpiryTime { get; set; }
-
+        public string? FullName => $"{FirstName} {LastName}".Trim();
         //Navigation Properties
         public List<Post> Posts { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; }
