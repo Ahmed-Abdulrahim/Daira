@@ -1,3 +1,5 @@
+using Daira.Api.Middlewares;
+
 namespace Daira.Api
 {
     public class Program
@@ -17,6 +19,7 @@ namespace Daira.Api
             builder.Services.AddApplicationServices();
             var app = builder.Build();
             await app.ApplyMigrationWithSeed();
+            app.UseGlobalExceptionHandler();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

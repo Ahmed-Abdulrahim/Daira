@@ -11,3 +11,7 @@ global using Microsoft.OpenApi.Models;
 global using System.Text;
 global using Daira.Api.Extensions;
 global using Daira.Application;
+global using Daira.Api.Errors;
+global using Domain.Exceptions;
+global using System.Net;
+global using System.Text.Json;
