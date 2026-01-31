@@ -9,4 +9,7 @@ global using FluentValidation;
 global using System.Reflection;
 global using AutoMapper;
 global using Daira.Application.Response.Auth;
-
+global using Daira.Application.Response;
+global using System.Security.Claims;
+global using Daira.Application.DTOs.RolesDto;
+global using Daira.Application.Response.Roles;
