@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Daira.Application.Interfaces.Auth;
+using Microsoft.AspNetCore.Identity;
 
 namespace Daira.Infrastructure.Services.AuthService
 {
-    public class AuthService(UserManager<AppUser> userManager, ILogger<AuthService> logger, IMapper mapper, IEmailService emailService, IOptions<EmailSettings> _emailSettings) : IAuthService
+    public class AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, ILogger<AuthService> logger, IMapper mapper, IEmailService emailService, IOptions<EmailSettings> _emailSettings) : IAuthService
     {
         private readonly EmailSettings emailSettings = _emailSettings.Value;
+
+        //Register User
         public async Task<RegisterResponse> RegisterAsync(RegisterDto registerDto)
         {
             var existingUser = await userManager.FindByEmailAsync(registerDto.Email);
@@ -36,6 +39,37 @@ namespace Daira.Infrastructure.Services.AuthService
             return RegisterResponse.Success(user.Id, user.Email!, requiresConfirmation: true);
 
         }
+
+        //Login User
+        public async Task<LoginResponse> LoginAsync(LoginDto loginDto)
+        {
+            var user = await userManager.FindByEmailAsync(loginDto.Email);
+            if (user is null) return LoginResponse.Failure("Invalid email or password.");
+
+            if (!user.IsActive) return LoginResponse.Failure("User account is deactivated.");
+
+            if (!user.EmailConfirmed) return LoginResponse.Failure("Email is not confirmed.");
+
+            var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, lockoutOnFailure: true);
+            if (result.IsLockedOut)
+            {
+                return LoginResponse.LockedOut();
+            }
+
+            if (result.RequiresTwoFactor)
+            {
+                return LoginResponse.TwoFactorRequired(user.Email!);
+            }
+
+            if (!result.Succeeded)
+            {
+                return LoginResponse.Failure("Invalid email or password.");
+            }
+
+            return await GenerateAuthTokensAsync(user);
+        }
+
+        //Change Password
         public Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordDto changePasswordDto)
         {
             throw new NotImplementedException();
@@ -86,12 +120,6 @@ namespace Daira.Infrastructure.Services.AuthService
         {
             throw new NotImplementedException();
         }
-
-        public Task<LoginResponse> LoginAsync(LoginDto loginDto)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<LogoutResponse> LogoutAsync(string userId)
         {
             throw new NotImplementedException();
@@ -101,8 +129,6 @@ namespace Daira.Infrastructure.Services.AuthService
         {
             throw new NotImplementedException();
         }
-
-
 
         public Task<ResendConfirmationResponse> ResendEmailAsync(ResendEmailConfirmationDto resendEmailConfirmationDto)
         {
@@ -122,6 +148,29 @@ namespace Daira.Infrastructure.Services.AuthService
         public Task<LoginResponse> VerifyTwoFactorAsync(TwoFactorDto dto)
         {
             throw new NotImplementedException();
+        }
+
+
+
+        //Private Methods
+        private async Task<LoginResponse> GenerateAuthTokensAsync(AppUser user)
+        {
+            var roles = await userManager.GetRolesAsync(user);
+            var accessToken = await tokenService.GenerateAccessTokenAsync(user, roles);
+            var refreshToken = tokenService.GenerateRefreshToken();
+
+
+            await userManager.UpdateAsync(user);
+
+            return LoginResponse.Success(
+                user.Id,
+                user.Email!,
+                user.FullName,
+                accessToken,
+                refreshToken,
+                tokenService.GetAccessTokenExpiration(),
+                tokenService.GetRefreshTokenExpiration(),
+                roles);
         }
     }
 }

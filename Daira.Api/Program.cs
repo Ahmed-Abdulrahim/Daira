@@ -28,6 +28,7 @@ namespace Daira.Api
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

@@ -1,4 +1,6 @@
-﻿namespace Daira.Api.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace Daira.Api.Controllers
 {
     [ApiController]
     [Route("Api/[controller]")]
@@ -19,7 +21,27 @@
             return Ok(result);
         }
 
+        //Login
+        [HttpPost("Login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<LoginResponse>> Login(LoginDto loginDto)
+        {
+            var result = await authService.LoginAsync(loginDto);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Test()
+        {
+
+            return Content("test");
+        }
         [HttpGet("confirm-email")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
