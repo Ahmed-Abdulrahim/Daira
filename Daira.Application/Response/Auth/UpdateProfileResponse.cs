@@ -1,9 +1,9 @@
-﻿namespace Daira.Application.Response
+﻿namespace Daira.Application.Response.Auth
 {
     public class UpdateProfileResponse
     {
         public bool Succeeded { get; set; }
-        public UserProfileResponse? Profile { get; set; }
+        public UserProfileResponse Profile { get; set; }
         public string Message { get; set; } = string.Empty;
 
         public List<string> Errors { get; set; } = new();

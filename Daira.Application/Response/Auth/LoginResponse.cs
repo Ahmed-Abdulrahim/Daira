@@ -1,4 +1,4 @@
-﻿namespace Daira.Application.Response
+﻿namespace Daira.Application.Response.Auth
 {
     public class LoginResponse
     {
@@ -7,9 +7,9 @@
         public string RefreshToken { get; set; }
         public DateTime? AccessTokenExpiration { get; set; }
         public DateTime? RefreshTokenExpiration { get; set; }
-        public string? UserId { get; set; }
-        public string? Email { get; set; }
-        public string? FullName { get; set; }
+        public string UserId { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
         public List<string> Roles { get; set; } = new();
         public bool RequiresTwoFactor { get; set; }
         public bool IsLockedOut { get; set; }
@@ -19,7 +19,7 @@
 
         public static LoginResponse Success(string userId, string email, string fullName,
             string accessToken, string refreshToken, DateTime accessTokenExpiration,
-            DateTime refreshTokenExpiration, IList<string>? roles = null)
+            DateTime refreshTokenExpiration, IList<string> roles = null)
         {
             return new LoginResponse
             {

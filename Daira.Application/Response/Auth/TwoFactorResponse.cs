@@ -1,12 +1,12 @@
-﻿namespace Daira.Application.Response
+﻿namespace Daira.Application.Response.Auth
 {
     public class TwoFactorResponse
     {
         public bool Succeeded { get; set; }
         public bool IsTwoFactorEnabled { get; set; }
 
-        public string? AuthenticatorKey { get; set; }
-        public string? QrCodeUrl { get; set; }
+        public string AuthenticatorKey { get; set; }
+        public string QrCodeUrl { get; set; }
         public List<string> RecoveryCodes { get; set; } = new();
         public string Message { get; set; } = string.Empty;
         public List<string> Errors { get; set; } = new();

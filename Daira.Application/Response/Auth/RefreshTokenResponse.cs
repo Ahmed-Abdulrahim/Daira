@@ -1,4 +1,4 @@
-﻿namespace Daira.Application.Response
+﻿namespace Daira.Application.Response.Auth
 {
     public class RefreshTokenResponse
     {
