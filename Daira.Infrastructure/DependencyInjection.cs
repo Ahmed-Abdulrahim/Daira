@@ -1,6 +1,4 @@
-﻿using Daira.Infrastructure.Services.AuthService;
-
-namespace Daira.Infrastructure
+﻿namespace Daira.Infrastructure
 {
     public static class DependencyInjection
     {
@@ -77,6 +75,7 @@ namespace Daira.Infrastructure
 
             // Register services
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IUnitOfWork, UnitOfWorkClass>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
 

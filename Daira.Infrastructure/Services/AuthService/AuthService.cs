@@ -1,9 +1,6 @@
-﻿using Daira.Application.Interfaces.Auth;
-using Microsoft.AspNetCore.Identity;
-
-namespace Daira.Infrastructure.Services.AuthService
+﻿namespace Daira.Infrastructure.Services.AuthService
 {
-    public class AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, ILogger<AuthService> logger, IMapper mapper, IEmailService emailService, IOptions<EmailSettings> _emailSettings) : IAuthService
+    public class AuthService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, SignInManager<AppUser> signInManager, ITokenService tokenService, ILogger<AuthService> logger, IMapper mapper, IEmailService emailService, IOptions<EmailSettings> _emailSettings) : IAuthService
     {
         private readonly EmailSettings emailSettings = _emailSettings.Value;
 
@@ -160,7 +157,14 @@ namespace Daira.Infrastructure.Services.AuthService
             var refreshToken = tokenService.GenerateRefreshToken();
 
 
-            await userManager.UpdateAsync(user);
+            var refreshTokenrow = new RefreshToken
+            {
+                Token = refreshToken,
+                ExpiresAt = tokenService.GetRefreshTokenExpiration(),
+                UserId = user.Id,
+            };
+            await unitOfWork.Repository<RefreshToken>().AddAsync(refreshTokenrow);
+            await unitOfWork.CommitAsync();
 
             return LoginResponse.Success(
                 user.Id,

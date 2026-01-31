@@ -1,6 +1,6 @@
-﻿namespace Daira.Infrastructure.UnitOfWork
+﻿namespace Daira.Infrastructure.unitOfWork
 {
-    public class UnitOfWork(DairaDbContext context, UserManager<AppUser> userManger) : IUnitOfWork
+    public class UnitOfWorkClass(DairaDbContext context, UserManager<AppUser> userManger) : IUnitOfWork
     {
         private readonly Dictionary<string, object> repositories = new();
 
