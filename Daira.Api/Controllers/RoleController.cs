@@ -1,6 +1,4 @@
-﻿using Daira.Application.Response.Roles;
-
-namespace Daira.Api.Controllers
+﻿namespace Daira.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -41,6 +39,17 @@ namespace Daira.Api.Controllers
             return Ok(result);
         }
 
+        //CreateRole
+        [HttpPost("CreateRole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<RoleResponse>> CreateRole([FromBody] CreateRoleDto createRoleDto)
+        {
+            var result = await roleService.CreateRoleAsync(createRoleDto);
+            if (!result.Succeeded) return BadRequest(result);
+            return Ok(result);
+        }
+
         //GetRoleFor Specific User
         [HttpGet("GetUserRole/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -74,5 +83,39 @@ namespace Daira.Api.Controllers
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
         }
+
+        //AssignRoleToUser
+        [HttpPost("AssignRole/{roleName}/User/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<AssignRoleResponse>> AssignRoleToUser(string userId, string roleName)
+        {
+            var result = await roleService.AssignRoleToUserAsync(userId, roleName);
+            if (!result.Succeeded) return BadRequest(result);
+            return Ok(result);
+        }
+
+        //DeleteRole
+        [HttpDelete("deleteRole/{roleName}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<RoleResponse>> DeleteRole(string roleName)
+        {
+            var result = await roleService.DeleteRoleAsync(roleName);
+            if (!result.Succeeded) return BadRequest(result);
+            return Ok(result);
+        }
+
+        //UpdateRole
+        [HttpPut("updateRole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> UpdateRole(string roleId, [FromBody] UpdateRoleDto updateRoleDto)
+        {
+            var result = await roleService.UpdateRoleAsync(roleId, updateRoleDto);
+            if (!result.Succeeded) return BadRequest(result);
+            return Ok(result);
+        }
+
     }
 }

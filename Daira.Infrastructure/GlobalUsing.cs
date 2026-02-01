@@ -36,3 +36,5 @@ global using Microsoft.AspNetCore.WebUtilities;
 global using System.Text.Encodings.Web;
 global using Daira.Infrastructure.Services.AuthService;
 global using Daira.Infrastructure.unitOfWork;
+global using Daira.Application.DTOs.RolesDto;
+global using Daira.Application.Response.Roles;

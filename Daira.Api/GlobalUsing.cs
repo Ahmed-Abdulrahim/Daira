@@ -22,3 +22,5 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Authorization;
 global using System.Security.Claims;
 global using Daira.Application.Validation;
+global using Daira.Application.DTOs.RolesDto;
+global using Daira.Application.Response.Roles;

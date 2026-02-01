@@ -1,24 +1,78 @@
-﻿using Daira.Application.DTOs.RolesDto;
-using Daira.Application.Response.Roles;
-using Microsoft.AspNetCore.Identity;
-
-namespace Daira.Infrastructure.Services.AuthService
+﻿namespace Daira.Infrastructure.Services.AuthService
 {
     public class RoleService(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IUnitOfWork unitOfWork, ILogger<RoleService> logger) : IRoleService
     {
-        public Task<AssignRoleResponse> AssignRoleToUserAsync(string userId, string roleName)
+        //AssignRoleToUserAsync
+        public async Task<AssignRoleResponse> AssignRoleToUserAsync(string userId, string roleName)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return AssignRoleResponse.Failure("User not found.");
+            }
+
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                return AssignRoleResponse.Failure($"Role '{roleName}' does not exist.");
+            }
+
+            if (await userManager.IsInRoleAsync(user, roleName))
+            {
+                return AssignRoleResponse.Failure($"User is already in role '{roleName}'.");
+            }
+
+            var result = await userManager.AddToRoleAsync(user, roleName);
+            if (!result.Succeeded)
+            {
+                return AssignRoleResponse.Failure(result.Errors.First().Description);
+            }
+
+            logger.LogInformation("Assigned role {RoleName} to user {UserId}", roleName, userId);
+            return AssignRoleResponse.AssignSuccess(userId, roleName);
         }
 
-        public Task<RoleResponse> CreateRoleAsync(CreateRoleDto dto)
+        //CreateRole
+        public async Task<RoleResponse> CreateRoleAsync(CreateRoleDto dto)
         {
-            throw new NotImplementedException();
+            if (await roleManager.RoleExistsAsync(dto.Name))
+            {
+                return RoleResponse.Failure($"Role '{dto.Name}' already exists.");
+            }
+            var role = new AppRole(dto.Name, dto.Description ?? string.Empty);
+            var result = await roleManager.CreateAsync(role);
+            if (!result.Succeeded)
+            {
+                return RoleResponse.Failure(result.Errors.Select(e => e.Description));
+            }
+
+            logger.LogInformation("Created role: {RoleName}", dto.Name);
+            return RoleResponse.Success(MapToDto(role), $"Role '{dto.Name}' created successfully.");
         }
 
-        public Task<RoleResponse> DeleteRoleAsync(string roleId)
+        //Delete Role
+        public async Task<RoleResponse> DeleteRoleAsync(string roleId)
         {
-            throw new NotImplementedException();
+            var role = await roleManager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                return RoleResponse.Failure("Role not found.");
+            }
+
+            // Check if any users are assigned to this role
+            var usersInRole = await userManager.GetUsersInRoleAsync(role.Name!);
+            if (usersInRole.Any())
+            {
+                return RoleResponse.Failure($"Cannot delete role '{role.Name}'. It is assigned to {usersInRole.Count} user(s).");
+            }
+
+            var result = await roleManager.DeleteAsync(role);
+            if (!result.Succeeded)
+            {
+                return RoleResponse.Failure(result.Errors.Select(e => e.Description));
+            }
+
+            logger.LogInformation("Deleted role: {RoleName}", role.Name);
+            return RoleResponse.Success(MapToDto(role), $"Role '{role.Name}' deleted successfully.");
         }
 
         //GetAllRoles
@@ -127,9 +181,52 @@ namespace Daira.Infrastructure.Services.AuthService
             return AssignRoleResponse.RemoveSuccess(userId, roleName);
         }
 
-        public Task<RoleResponse> UpdateRoleAsync(string roleId, UpdateRoleDto dto)
+        //updateRole
+        public async Task<RoleResponse> UpdateRoleAsync(string roleId, UpdateRoleDto dto)
         {
-            throw new NotImplementedException();
+            var role = await roleManager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                return RoleResponse.Failure("Role not found.");
+            }
+
+            // Check if new name conflicts with existing role
+            if (!string.IsNullOrEmpty(dto.Name) && dto.Name != role.Name)
+            {
+                if (await roleManager.RoleExistsAsync(dto.Name))
+                {
+                    return RoleResponse.Failure($"Role '{dto.Name}' already exists.");
+                }
+                role.Name = dto.Name;
+            }
+
+            if (dto.Description != null)
+            {
+                role.Description = dto.Description;
+            }
+
+
+            var result = await roleManager.UpdateAsync(role);
+            if (!result.Succeeded)
+            {
+                return RoleResponse.Failure(result.Errors.Select(e => e.Description));
+            }
+
+            logger.LogInformation("Updated role: {RoleId}", roleId);
+            return RoleResponse.Success(MapToDto(role), "Role updated successfully.");
+        }
+
+        //Private
+        private static RoleDto MapToDto(AppRole role)
+        {
+            return new RoleDto
+            {
+                Id = role.Id,
+                Name = role.Name!,
+                NormalizedName = role.NormalizedName,
+                Description = role.Description,
+
+            };
         }
     }
 }
