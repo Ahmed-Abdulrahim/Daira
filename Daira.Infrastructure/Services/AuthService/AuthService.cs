@@ -110,16 +110,6 @@
             return ConfirmEmailResponse.Success();
         }
 
-        public Task<TwoFactorResponse> DisableTwoFactorAsync(string userId, string code)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<TwoFactorResponse> EnableTwoFactorAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
         //Forget Password
         public async Task<ForgetPasswordResponse> ForgetPasswordAsync(ForgotPasswordDto forgotPasswordDto)
         {
@@ -268,10 +258,6 @@
             return UpdateProfileResponse.Success();
         }
 
-        public Task<LoginResponse> VerifyTwoFactorAsync(TwoFactorDto dto)
-        {
-            throw new NotImplementedException();
-        }
 
         //Private Methods
         private async Task<LoginResponse> GenerateAuthTokensAsync(AppUser user)
@@ -300,5 +286,8 @@
                  refreshToken,
                 roles);
         }
+
+
+
     }
 }
