@@ -1,4 +1,6 @@
-﻿namespace Daira.Infrastructure.Services.AuthService
+﻿using Daira.Domain.Models.AuthModel;
+
+namespace Daira.Infrastructure.Services.AuthService
 {
     public class AuthService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, SignInManager<AppUser> signInManager, ITokenService tokenService, ILogger<AuthService> logger, IMapper mapper, IEmailService emailService, IOptions<EmailSettings> _emailSettings) : IAuthService
     {
@@ -122,9 +124,36 @@
             throw new NotImplementedException();
         }
 
-        public Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
+        public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
         {
-            throw new NotImplementedException();
+            var principal = tokenService.GetPrincipalFromExpiredToken(refreshTokenDto.Token);
+            if (principal is null) return RefreshTokenResponse.Failure("Invalid access token.");
+            var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null) return RefreshTokenResponse.Failure("Invalid access token.");
+            var user = await userManager.FindByIdAsync(userId);
+            if (user is null) return RefreshTokenResponse.Failure("User not found.");
+            var specRefreshToken = new RefreshTokenSpecification(rt => rt.Token == refreshTokenDto.RefreshToken && rt.UserId == user.Id && rt.ExpiresAt >= DateTime.UtcNow && rt.IsRevoked == false);
+            var getRefreshToken = await unitOfWork.Repository<RefreshToken>().GetByIdSpecTracked(specRefreshToken);
+            if (getRefreshToken is null) return RefreshTokenResponse.Failure("Invalid refresh token.");
+            var roles = await userManager.GetRolesAsync(user);
+            var newAccessToken = await tokenService.GenerateAccessTokenAsync(user, roles);
+            var newRefeshToken = tokenService.GenerateRefreshToken();
+            var refreshTokenrow = new RefreshToken
+            {
+                Token = newRefeshToken,
+                ExpiresAt = tokenService.GetRefreshTokenExpiration(),
+                UserId = user.Id,
+            };
+            getRefreshToken.IsRevoked = true;
+            getRefreshToken.RevokedAt = DateTime.UtcNow;
+            unitOfWork.Repository<RefreshToken>().Update(getRefreshToken);
+            await unitOfWork.Repository<RefreshToken>().AddAsync(refreshTokenrow);
+            await unitOfWork.CommitAsync();
+            return RefreshTokenResponse.Success(
+                newAccessToken,
+                newRefeshToken,
+                tokenService.GetAccessTokenExpiration(),
+                tokenService.GetRefreshTokenExpiration());
         }
 
         public Task<ResendConfirmationResponse> ResendEmailAsync(ResendEmailConfirmationDto resendEmailConfirmationDto)

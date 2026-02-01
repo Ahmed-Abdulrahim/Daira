@@ -35,13 +35,7 @@ namespace Daira.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> Test()
-        {
-
-            return Content("test");
-        }
+        //ConfirmEmail
         [HttpGet("confirm-email")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -54,6 +48,20 @@ namespace Daira.Api.Controllers
                 return BadRequest(result);
             }
 
+            return Ok(result);
+        }
+
+        //GetNewAccessToken
+        [HttpPost("refresh-token")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<RefreshTokenResponse>> GetNewAccessToken(RefreshTokenDto tokenRequest)
+        {
+            var result = await authService.RefreshTokenAsync(tokenRequest);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
     }
