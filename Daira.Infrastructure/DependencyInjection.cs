@@ -78,6 +78,7 @@
             services.AddScoped<IUnitOfWork, UnitOfWorkClass>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             // Add HttpContextAccessor for CurrentUserService
             services.AddHttpContextAccessor();
