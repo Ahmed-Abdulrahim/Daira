@@ -19,3 +19,6 @@ global using Daira.Application.DTOs.AuthDto;
 global using Daira.Application.Interfaces.Auth;
 global using Daira.Application.Response.Auth;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Authorization;
+global using System.Security.Claims;
+global using Daira.Application.Validation;

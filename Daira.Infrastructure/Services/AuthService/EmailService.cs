@@ -11,7 +11,6 @@
             logger = _logger;
         }
 
-
         public async Task SendEmailConfirmationAsync(string email, string confirmationLink)
         {
             var subject = "Confirm Your Email Address";

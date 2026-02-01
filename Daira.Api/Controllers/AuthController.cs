@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace Daira.Api.Controllers
+﻿namespace Daira.Api.Controllers
 {
     [ApiController]
     [Route("Api/[controller]")]
@@ -64,5 +62,66 @@ namespace Daira.Api.Controllers
             }
             return Ok(result);
         }
+
+        //Logout
+        [HttpPost("Logout")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Logout()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var result = await authService.LogoutAsync(userId);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        //ForgotPassword
+        [HttpPost("Forget-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ForgetPasswordResponse>> ForgetPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
+        {
+            var user = await authService.ForgetPasswordAsync(forgotPasswordDto);
+            if (!user.Succeeded)
+            {
+                return BadRequest(user);
+            }
+            return Ok(user);
+        }
+
+        [HttpPost("reset-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+        {
+            var result = await authService.ResetPasswordAsync(resetPasswordDto);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        //ConfirmEmail
+        [HttpPost("confirm-Email")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ResendConfirmationEmail([FromBody] ResendEmailConfirmationDto dto)
+        {
+            var result = await authService.ResendEmailAsync(dto);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
     }
 }

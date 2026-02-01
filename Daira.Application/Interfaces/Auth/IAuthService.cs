@@ -10,7 +10,7 @@
         Task<ResendConfirmationResponse> ResendEmailAsync(ResendEmailConfirmationDto resendEmailConfirmationDto);
         Task<ForgetPasswordResponse> ForgetPasswordAsync(ForgotPasswordDto forgotPasswordDto);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
-        Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordDto changePasswordDto);
+        Task<ChangePasswordResponse> ChangePasswordAsync(string userId, ChangePasswordDto changePasswordDto);
         Task<LoginResponse> VerifyTwoFactorAsync(TwoFactorDto dto);
         Task<TwoFactorResponse> EnableTwoFactorAsync(string userId);
         Task<TwoFactorResponse> DisableTwoFactorAsync(string userId, string code);

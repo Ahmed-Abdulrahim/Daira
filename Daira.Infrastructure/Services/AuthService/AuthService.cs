@@ -1,6 +1,4 @@
-﻿using Daira.Domain.Models.AuthModel;
-
-namespace Daira.Infrastructure.Services.AuthService
+﻿namespace Daira.Infrastructure.Services.AuthService
 {
     public class AuthService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, SignInManager<AppUser> signInManager, ITokenService tokenService, ILogger<AuthService> logger, IMapper mapper, IEmailService emailService, IOptions<EmailSettings> _emailSettings) : IAuthService
     {
@@ -69,11 +67,23 @@ namespace Daira.Infrastructure.Services.AuthService
         }
 
         //Change Password
-        public Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordDto changePasswordDto)
+        public async Task<ChangePasswordResponse> ChangePasswordAsync(string userId, ChangePasswordDto changePasswordDto)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByIdAsync(userId);
+            if (user is null) return ChangePasswordResponse.Failure("User not found.");
+            var result = await userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                return ChangePasswordResponse.Failure(errors);
+            }
+            var specRefreshTokens = new RefreshTokenSpecification(rt => rt.UserId == user.Id);
+            await LogoutAsync(userId);
+            logger.LogInformation("Password changed for user {UserId} , Plz Login again", userId);
+            return ChangePasswordResponse.Success();
         }
 
+        //Confirm Email
         public async Task<ConfirmEmailResponse> ConfirmEmailAsync(ConfirmEmailDto confirmEmailDto)
         {
             var user = await userManager.FindByEmailAsync(confirmEmailDto.Email);
@@ -110,20 +120,55 @@ namespace Daira.Infrastructure.Services.AuthService
             throw new NotImplementedException();
         }
 
-        public Task<ForgetPasswordResponse> ForgetPasswordAsync(ForgotPasswordDto forgotPasswordDto)
+        //Forget Password
+        public async Task<ForgetPasswordResponse> ForgetPasswordAsync(ForgotPasswordDto forgotPasswordDto)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByEmailAsync(forgotPasswordDto.Email);
+            if (user is null || !user.EmailConfirmed)
+            {
+                return ForgetPasswordResponse.Success();
+            }
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            var resetLink = $"{emailSettings.BaseUrl}/api/auth/reset-password?email={UrlEncoder.Default.Encode(user.Email!)}&token={encodedToken}";
+
+            try
+            {
+                await emailService.SendPasswordResetAsync(user.Email!, resetLink);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to send password reset email to {Email}", user.Email);
+            }
+            return ForgetPasswordResponse.Success();
         }
 
-        public Task<UserProfileResponse> GetProfileAsync(string userId)
+        //Get User Profile
+        public async Task<UserProfileResponse> GetProfileAsync(string userId)
         {
-            throw new NotImplementedException();
-        }
-        public Task<LogoutResponse> LogoutAsync(string userId)
-        {
-            throw new NotImplementedException();
+            var user = await userManager.FindByIdAsync(userId);
+            if (user is null) return UserProfileResponse.Failure("User not found.");
+            return mapper.Map<UserProfileResponse>(user); ;
         }
 
+        //LogOut User
+        public async Task<LogoutResponse> LogoutAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user is null) return LogoutResponse.Failed("User not found.");
+            var spec = new RefreshTokenSpecification(rt => rt.UserId == user.Id && rt.IsRevoked == false && rt.ExpiresAt >= DateTime.UtcNow);
+            var refreshTokens = await unitOfWork.Repository<RefreshToken>().GetAllWithSpec(spec);
+            foreach (var token in refreshTokens)
+            {
+                token.IsRevoked = true;
+                token.RevokedAt = DateTime.UtcNow;
+            }
+            await unitOfWork.CommitAsync();
+            return LogoutResponse.Succedd();
+
+        }
+
+        //Genrate New Tokens
         public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
         {
             var principal = tokenService.GetPrincipalFromExpiredToken(refreshTokenDto.Token);
@@ -156,27 +201,77 @@ namespace Daira.Infrastructure.Services.AuthService
                 tokenService.GetRefreshTokenExpiration());
         }
 
-        public Task<ResendConfirmationResponse> ResendEmailAsync(ResendEmailConfirmationDto resendEmailConfirmationDto)
+        //Resend Email Confirmation
+        public async Task<ResendConfirmationResponse> ResendEmailAsync(ResendEmailConfirmationDto resendEmailConfirmationDto)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByEmailAsync(resendEmailConfirmationDto.Email);
+            if (user is null) return ResendConfirmationResponse.Failure("User not Found");
+            if (!user.EmailConfirmed) return ResendConfirmationResponse.AlreadyConfirmed();
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            var confirmationLink = $"{emailSettings.BaseUrl}/api/auth/confirm-email?email={UrlEncoder.Default.Encode(user.Email!)}&token={encodedToken}";
+
+            try
+            {
+                await emailService.SendEmailConfirmationAsync(user.Email!, confirmationLink);
+            }
+            catch
+            {
+                logger.LogError("Failed to send confirmation email to {Email}", user.Email);
+            }
+            return ResendConfirmationResponse.Success(user.Email!);
         }
 
-        public Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+        //ResetPassword
+        public async Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByEmailAsync(resetPasswordDto.Email);
+            if (user == null)
+            {
+                return ResetPasswordResponse.Failure("Invalid request.");
+            }
+
+            var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetPasswordDto.Token));
+            var result = await userManager.ResetPasswordAsync(user, decodedToken, resetPasswordDto.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                return ResetPasswordResponse.Failure(string.Join(", ", errors));
+            }
+
+            await LogoutAsync(user.Id);
+
+            logger.LogInformation("Password reset successfully for user {Email}", user.Email);
+            return ResetPasswordResponse.Success();
         }
 
-        public Task<UpdateProfileResponse> UpdateProfileAsync(string userId, UpdateProfileDto dto)
+        //Update User Profile
+        public async Task<UpdateProfileResponse> UpdateProfileAsync(string userId, UpdateProfileDto dto)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByIdAsync(userId);
+            if (user is null) return UpdateProfileResponse.Failure("User not found.");
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.PhoneNumber = dto.PhoneNumber;
+            user.PictureUrl = dto.ProfilePicture;
+            user.UpdatedAt = DateTime.UtcNow;
+
+            var result = await userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                return UpdateProfileResponse.Failure(string.Join(", ", errors));
+            }
+
+            logger.LogInformation("Profile updated for user {UserId}", userId);
+            return UpdateProfileResponse.Success();
         }
 
         public Task<LoginResponse> VerifyTwoFactorAsync(TwoFactorDto dto)
         {
             throw new NotImplementedException();
         }
-
-
 
         //Private Methods
         private async Task<LoginResponse> GenerateAuthTokensAsync(AppUser user)
@@ -200,9 +295,9 @@ namespace Daira.Infrastructure.Services.AuthService
                 user.Email!,
                 user.FullName,
                 accessToken,
-                refreshToken,
                 tokenService.GetAccessTokenExpiration(),
                 tokenService.GetRefreshTokenExpiration(),
+                 refreshToken,
                 roles);
         }
     }

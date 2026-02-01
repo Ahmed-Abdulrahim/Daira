@@ -9,7 +9,7 @@
         public void DeleteRange(IEnumerable<T> entities) => Set.RemoveRange(entities);
         public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate) => Set.Where(predicate);
         public async Task<IEnumerable<T>> GetAllAsync() => await Set.AsNoTracking().ToListAsync();
-        public async Task<IEnumerable<T>> GetAllWithSpec(ISpecefication<T> spec) => await GenerateQuery(spec).AsNoTracking().ToListAsync();
+        public async Task<IEnumerable<T>> GetAllWithSpec(ISpecefication<T> spec) => await GenerateQuery(spec).ToListAsync();
         public async Task<T> GetByIdAsync(Guid id) => await Set.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
         public async Task<T> GetByIdSpec(ISpecefication<T> spec) => await GenerateQuery(spec).AsNoTracking().FirstOrDefaultAsync();
         public async Task<T> GetByIdSpecTracked(ISpecefication<T> spec) => await GenerateQuery(spec).FirstOrDefaultAsync();
