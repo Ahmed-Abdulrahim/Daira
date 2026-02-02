@@ -31,3 +31,7 @@ global using Daira.Application.DTOs.CommentModule;
 global using Daira.Application.Interfaces.CommentModule;
 global using Daira.Application.Response.CommentModule;
 global using System.Text.Json.Serialization;
+global using Daira.Application.Response.LikeModule;
+global using Daira.Application.Interfaces.FollowerModule;
+global using Daira.Application.Response.FollowerModule;
+

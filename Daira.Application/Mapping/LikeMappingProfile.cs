@@ -1,6 +1,4 @@
-﻿using Daira.Application.DTOs.LikeModule;
-
-namespace Daira.Application.Mapping
+﻿namespace Daira.Application.Mapping
 {
     public class LikeMappingProfile : Profile
     {

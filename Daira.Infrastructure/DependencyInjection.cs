@@ -81,6 +81,7 @@
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IFollowService, FollowService>();
 
             // Add HttpContextAccessor for CurrentUserService
             services.AddHttpContextAccessor();

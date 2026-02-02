@@ -20,3 +20,10 @@ global using Daira.Application.Response.PostModule;
 global using Daira.Domain.Models;
 global using Daira.Application.DTOs.CommentModule;
 global using Daira.Application.Response.CommentModule;
+global using Daira.Application.Response.LikeModule;
+global using Daira.Application.DTOs.LikeModule;
+global using Daira.Application.DTOs.FollowerModule;
+global using Daira.Application.Response.FollowerModule;
+
+
+

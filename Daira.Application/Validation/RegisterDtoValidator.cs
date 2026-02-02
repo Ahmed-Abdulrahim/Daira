@@ -5,7 +5,7 @@
         public RegisterDtoValidator()
         {
             RuleFor(r => r.UserName).NotEmpty().WithMessage("UserName is Required")
-                .MinimumLength(20).MaximumLength(50).WithMessage("User Name must between 8 and 50 Character")
+                .MinimumLength(5).MaximumLength(50).WithMessage("User Name must between 8 and 50 Character")
                 .Matches(@"^[a-zA-Z0-9_-]+$").WithMessage("Username can only contain letters, numbers, underscores and hyphens");
 
             RuleFor(r => r.Email).NotEmpty().WithMessage("Email is required")

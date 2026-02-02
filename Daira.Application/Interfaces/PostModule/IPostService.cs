@@ -1,6 +1,4 @@
-﻿using Daira.Application.Response.LikeModule;
-
-namespace Daira.Application.Interfaces.PostModule
+﻿namespace Daira.Application.Interfaces.PostModule
 {
     public interface IPostService
     {

@@ -1,6 +1,4 @@
-﻿using Daira.Application.Response.LikeModule;
-
-namespace Daira.Api.Controllers
+﻿namespace Daira.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

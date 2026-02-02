@@ -1,7 +1,4 @@
-﻿using Daira.Application.DTOs.LikeModule;
-using Daira.Application.Response.LikeModule;
-
-namespace Daira.Infrastructure.Services.PostService
+﻿namespace Daira.Infrastructure.Services.PostService
 {
     public class PostService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<PostService> logger) : IPostService
     {
