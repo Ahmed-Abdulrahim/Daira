@@ -15,3 +15,6 @@ global using Daira.Application.DTOs.RolesDto;
 global using Daira.Application.Response.Roles;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.Filters;
+global using Daira.Application.DTOs.PostModule;
+global using Daira.Application.Response.PostModule;
+global using Daira.Domain.Models;

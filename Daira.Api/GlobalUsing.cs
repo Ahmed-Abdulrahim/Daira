@@ -24,3 +24,6 @@ global using System.Security.Claims;
 global using Daira.Application.Validation;
 global using Daira.Application.DTOs.RolesDto;
 global using Daira.Application.Response.Roles;
+global using Daira.Application.DTOs.PostModule;
+global using Daira.Application.Interfaces.PostModule;
+global using Daira.Application.Response.PostModule;

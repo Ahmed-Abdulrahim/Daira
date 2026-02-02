@@ -38,3 +38,6 @@ global using Daira.Infrastructure.Services.AuthService;
 global using Daira.Infrastructure.unitOfWork;
 global using Daira.Application.DTOs.RolesDto;
 global using Daira.Application.Response.Roles;
+global using Daira.Application.DTOs.PostModule;
+global using Daira.Application.Interfaces.PostModule;
+global using Daira.Application.Response.PostModule;
