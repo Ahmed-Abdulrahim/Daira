@@ -14,6 +14,7 @@
             return new UpdateResponse
             {
                 Succeeded = true,
+                Id = updateResponse.Id,
                 Content = updateResponse.Content,
                 Author = updateResponse.Author,
                 Message = "Post Updated successfully."

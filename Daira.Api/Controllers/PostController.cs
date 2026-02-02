@@ -58,7 +58,6 @@
         [ProducesResponseType(typeof(PostResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
         public async Task<IActionResult> DeletePost(Guid postId)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -70,6 +69,40 @@
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
 
+        }
+
+        //GetPosts for specific user
+        [HttpGet("get-posts")]
+        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPostsForSpecificUser()
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (user is null)
+            {
+                return Unauthorized();
+            }
+            var result = await postService.GetAllPostForSpecificUser(user);
+            if (!result.Succeeded) return BadRequest(result);
+            return Ok(result);
+        }
+
+        // Get Feed (Posts from followed users)
+        [HttpGet("feed")]
+        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetFeed([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (user is null)
+            {
+                return Unauthorized();
+            }
+            var result = await postService.GetFeedAsync(user, pageNumber, pageSize);
+            if (!result.Succeeded) return BadRequest(result);
+            return Ok(result);
         }
     }
 }

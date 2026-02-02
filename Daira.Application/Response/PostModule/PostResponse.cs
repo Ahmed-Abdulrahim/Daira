@@ -4,6 +4,7 @@
     {
         public bool Succeeded { get; set; }
         public GetPostResponse? Post { get; set; }
+        public List<GetPostResponse>? Posts { get; set; }
         public string Message { get; set; } = string.Empty;
         public List<string> Errors { get; set; } = new();
         public static PostResponse Success(GetPostResponse post, string message = "Operation completed successfully.")
@@ -15,6 +16,16 @@
                 Message = message
             };
         }
+        public static PostResponse Success(List<GetPostResponse> posts, string message = "Operation completed successfully.")
+        {
+            return new PostResponse
+            {
+                Succeeded = true,
+                Posts = posts,
+                Message = message
+            };
+        }
+
         public static PostResponse Success(string message = "Operation completed successfully.")
         {
             return new PostResponse
