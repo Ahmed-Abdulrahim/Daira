@@ -1,11 +1,10 @@
-﻿using Daira.Application.DTOs.CommentModule;
-
-namespace Daira.Application.Response.CommentModule
+﻿namespace Daira.Application.Response.CommentModule
 {
     public class CommentResponse
     {
         public bool Succeeded { get; set; }
         public CommentDto? Comment { get; set; }
+        public List<CommentDto>? Comments { get; set; }
         public string Message { get; set; } = string.Empty;
         public List<string> Errors { get; set; } = new();
         public static CommentResponse Success(CommentDto comment, string message = "Operation completed successfully.")
@@ -14,6 +13,15 @@ namespace Daira.Application.Response.CommentModule
             {
                 Succeeded = true,
                 Comment = comment,
+                Message = message
+            };
+        }
+        public static CommentResponse Success(List<CommentDto> comments, string message = "Operation completed successfully.")
+        {
+            return new CommentResponse
+            {
+                Succeeded = true,
+                Comments = comments,
                 Message = message
             };
         }

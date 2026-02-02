@@ -25,47 +25,47 @@
         }
 
         //GetById
-        [HttpGet("get-post/{postId}")]
+        [HttpGet("get-post/{id}")]
         [ProducesResponseType(typeof(PostResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetById(Guid postId)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var result = await postService.GetPostByIdAsync(postId);
+            var result = await postService.GetPostByIdAsync(id);
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
         }
 
         //update Post
-        [HttpPut("update-post/{postId}")]
+        [HttpPut("update-post/{id}")]
         [ProducesResponseType(typeof(UpdateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdatePost(Guid postId, UpdatePostDto updatePostDto)
+        public async Task<IActionResult> UpdatePost(Guid id, UpdatePostDto updatePostDto)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (user is null)
             {
                 return Unauthorized();
             }
-            var result = await postService.UpdatePostAsync(postId, user, updatePostDto);
+            var result = await postService.UpdatePostAsync(id, user, updatePostDto);
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
         }
 
         //Delete Post
-        [HttpDelete("delete-post/{postId}")]
+        [HttpDelete("delete-post/{id}")]
         [ProducesResponseType(typeof(PostResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeletePost(Guid postId)
+        public async Task<IActionResult> DeletePost(Guid id)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (user is null)
             {
                 return Unauthorized();
             }
-            var result = await postService.DeletePostAsync(user, postId);
+            var result = await postService.DeletePostAsync(user, id);
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
 

@@ -30,3 +30,4 @@ global using Daira.Application.Response.PostModule;
 global using Daira.Application.DTOs.CommentModule;
 global using Daira.Application.Interfaces.CommentModule;
 global using Daira.Application.Response.CommentModule;
+global using System.Text.Json.Serialization;

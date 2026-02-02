@@ -11,6 +11,13 @@ namespace Daira.Api
             builder.Services.AddControllers(options =>
             {
                 options.Filters.Add<ValidateModelAttribute>();
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition =
+                    JsonIgnoreCondition.WhenWritingNull;
+
+                options.JsonSerializerOptions.PropertyNamingPolicy =
+                    JsonNamingPolicy.CamelCase;
             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

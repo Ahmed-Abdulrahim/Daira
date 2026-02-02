@@ -17,24 +17,24 @@
         }
 
         //GetRoleById
-        [HttpGet("getById/{roleId}")]
+        [HttpGet("getById/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RoleResponse>> GetById(string roleId)
+        public async Task<ActionResult<RoleResponse>> GetById(string id)
         {
-            var result = await roleService.GetRoleByIdAsync(roleId);
+            var result = await roleService.GetRoleByIdAsync(id);
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
         }
 
 
         //GetRoleByName
-        [HttpGet("getByName/{roleName}")]
+        [HttpGet("getByName/{Name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RoleResponse>> GetByName(string roleName)
+        public async Task<ActionResult<RoleResponse>> GetByName(string Name)
         {
-            var result = await roleService.GetRoleByNameAsync(roleName);
+            var result = await roleService.GetRoleByNameAsync(Name);
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
         }
@@ -63,45 +63,45 @@
 
 
         //GetUsersInRole
-        [HttpGet("UsersInRole/{roleName}")]
+        [HttpGet("UsersInRole/{Name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UsersInRoleResponse>> GetUsersInRole(string roleName)
+        public async Task<ActionResult<UsersInRoleResponse>> GetUsersInRole(string Name)
         {
-            var result = await roleService.GetUsersInRoleAsync(roleName);
+            var result = await roleService.GetUsersInRoleAsync(Name);
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
         }
 
         //RemoveRoleFromUser
-        [HttpDelete("user/{userId}/remove/{roleName}")]
+        [HttpDelete("user/{userId}/remove/{Name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<AssignRoleResponse>> RemoveRoleFromUser(string userId, string roleName)
+        public async Task<ActionResult<AssignRoleResponse>> RemoveRoleFromUser(string userId, string Name)
         {
-            var result = await roleService.RemoveRoleFromUserAsync(userId, roleName);
+            var result = await roleService.RemoveRoleFromUserAsync(userId, Name);
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
         }
 
         //AssignRoleToUser
-        [HttpPost("AssignRole/{roleName}/User/{userId}")]
+        [HttpPost("AssignRole/{Name}/User/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<AssignRoleResponse>> AssignRoleToUser(string userId, string roleName)
+        public async Task<ActionResult<AssignRoleResponse>> AssignRoleToUser(string userId, string Name)
         {
-            var result = await roleService.AssignRoleToUserAsync(userId, roleName);
+            var result = await roleService.AssignRoleToUserAsync(userId, Name);
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
         }
 
         //DeleteRole
-        [HttpDelete("deleteRole/{roleName}")]
+        [HttpDelete("deleteRole/{Name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RoleResponse>> DeleteRole(string roleName)
+        public async Task<ActionResult<RoleResponse>> DeleteRole(string Name)
         {
-            var result = await roleService.DeleteRoleAsync(roleName);
+            var result = await roleService.DeleteRoleAsync(Name);
             if (!result.Succeeded) return BadRequest(result);
             return Ok(result);
         }
