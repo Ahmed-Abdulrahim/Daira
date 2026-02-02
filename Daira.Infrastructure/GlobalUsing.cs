@@ -41,3 +41,8 @@ global using Daira.Application.Response.Roles;
 global using Daira.Application.DTOs.PostModule;
 global using Daira.Application.Interfaces.PostModule;
 global using Daira.Application.Response.PostModule;
+global using Daira.Application.Interfaces.CommentModule;
+global using Daira.Infrastructure.Services.CommentService;
+global using Daira.Infrastructure.Services.PostService;
+global using Daira.Application.DTOs.CommentModule;
+global using Daira.Application.Response.CommentModule;

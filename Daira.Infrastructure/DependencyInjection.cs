@@ -1,7 +1,4 @@
-﻿using Daira.Application.Interfaces.PostModule;
-using Daira.Infrastructure.Services.PostService;
-
-namespace Daira.Infrastructure
+﻿namespace Daira.Infrastructure
 {
     public static class DependencyInjection
     {
@@ -83,6 +80,7 @@ namespace Daira.Infrastructure
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentService, CommentService>();
 
             // Add HttpContextAccessor for CurrentUserService
             services.AddHttpContextAccessor();

@@ -18,3 +18,5 @@ global using Microsoft.AspNetCore.Mvc.Filters;
 global using Daira.Application.DTOs.PostModule;
 global using Daira.Application.Response.PostModule;
 global using Daira.Domain.Models;
+global using Daira.Application.DTOs.CommentModule;
+global using Daira.Application.Response.CommentModule;
