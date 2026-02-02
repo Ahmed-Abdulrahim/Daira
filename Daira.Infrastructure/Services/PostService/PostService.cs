@@ -1,4 +1,7 @@
-﻿namespace Daira.Infrastructure.Services.PostService
+﻿using Daira.Application.DTOs.LikeModule;
+using Daira.Application.Response.LikeModule;
+
+namespace Daira.Infrastructure.Services.PostService
 {
     public class PostService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<PostService> logger) : IPostService
     {
@@ -141,5 +144,78 @@
             }
         }
 
+        //Like Post
+        public async Task<LikeResponse> LikePostAsync(string userId, Guid postId)
+        {
+            var existPost = await unitOfWork.Repository<Post>().GetByIdAsync(postId);
+            if (existPost is null)
+            {
+                logger.LogWarning("Post {PostId} not found for liking", postId);
+                return LikeResponse.Failure("Post not found ");
+            }
+            var spec = new LikeSpecification(l => l.UserId == userId && l.PostId == postId);
+            var existLike = await unitOfWork.Repository<Like>().GetByIdSpec(spec);
+            if (existLike is not null)
+            {
+                logger.LogInformation("User {UserId} already liked post {PostId}", userId, postId);
+                return LikeResponse.Failure("You have already liked this post ");
+            }
+            existPost.LikesCount += 1;
+            var like = new Like
+            {
+                PostId = postId,
+                UserId = userId,
+                CreatedAt = DateTime.UtcNow
+            };
+            await unitOfWork.Repository<Like>().AddAsync(like);
+            await unitOfWork.CommitAsync();
+            var likeDto = mapper.Map<LikeDto>(like);
+            logger.LogInformation("User {UserId} liked post {PostId} successfully", userId, postId);
+            return LikeResponse.Success(likeDto, "Post liked successfully ");
+        }
+
+        //Unlike Post
+        public async Task<LikeResponse> UnLikePostAsync(string userId, Guid postId)
+        {
+            var existPost = await unitOfWork.Repository<Post>().GetByIdAsync(postId);
+            if (existPost is null)
+            {
+                logger.LogWarning("Post {PostId} not found for unliking", postId);
+                return LikeResponse.Failure("Post not found ");
+            }
+            var spec = new LikeSpecification(l => l.UserId == userId && l.PostId == postId);
+            var existLike = await unitOfWork.Repository<Like>().GetByIdSpec(spec);
+            if (existLike is null)
+            {
+                logger.LogInformation("User {UserId} has not liked post {PostId}", userId, postId);
+                return LikeResponse.Failure("You have not liked this post ");
+            }
+            existPost.LikesCount -= 1;
+            unitOfWork.Repository<Like>().Delete(existLike);
+            await unitOfWork.CommitAsync();
+            logger.LogInformation("User {UserId} unliked post {PostId} successfully", userId, postId);
+            return LikeResponse.Success("Post unliked successfully ");
+        }
+
+        //Get Post Likes
+        public async Task<LikeResponse> GetPostLikesAsync(Guid postId)
+        {
+            var existPost = await unitOfWork.Repository<Post>().GetByIdAsync(postId);
+            if (existPost is null)
+            {
+                logger.LogWarning("Post {PostId} not found for retrieving likes", postId);
+                return LikeResponse.Failure("Post not found ");
+            }
+            var spec = new LikeSpecification(l => l.PostId == postId);
+            var likes = await unitOfWork.Repository<Like>().GetAllWithSpec(spec);
+            if (!likes.Any())
+            {
+                logger.LogInformation("No likes found for post {PostId}", postId);
+                return LikeResponse.Failure("No likes found for this post ");
+            }
+            var likeDtos = mapper.Map<List<LikeDto>>(likes);
+            logger.LogInformation("Retrieved {Count} likes for post {PostId}", likeDtos.Count, postId);
+            return LikeResponse.Success(likeDtos, "Likes retrieved successfully ");
+        }
     }
 }

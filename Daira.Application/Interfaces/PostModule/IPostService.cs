@@ -1,4 +1,6 @@
-﻿namespace Daira.Application.Interfaces.PostModule
+﻿using Daira.Application.Response.LikeModule;
+
+namespace Daira.Application.Interfaces.PostModule
 {
     public interface IPostService
     {
@@ -15,6 +17,14 @@
         // Get Feed Posts
         Task<PostResponse> GetFeedAsync(string userId, int pageNumber = 1, int pageSize = 10);
 
+        //LikePost
+        Task<LikeResponse> LikePostAsync(string userId, Guid postId);
+
+        //UnLikePost
+        Task<LikeResponse> UnLikePostAsync(string userId, Guid postId);
+
+        //Get Post Likes
+        Task<LikeResponse> GetPostLikesAsync(Guid postId);
 
     }
 }
