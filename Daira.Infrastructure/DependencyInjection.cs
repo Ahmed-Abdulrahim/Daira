@@ -1,4 +1,6 @@
-﻿namespace Daira.Infrastructure
+﻿using Daira.Infrastructure.Services.FriendShipService;
+
+namespace Daira.Infrastructure
 {
     public static class DependencyInjection
     {
@@ -82,6 +84,7 @@
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IFollowService, FollowService>();
+            services.AddScoped<IFriendShipService, FriendShipService>();
 
             // Add HttpContextAccessor for CurrentUserService
             services.AddHttpContextAccessor();

@@ -13,7 +13,7 @@
         public string AddresseeId { get; set; }
         public RequestStatus Status { get; set; } = RequestStatus.Pending;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
+        public DateTime? UpdatedAt { get; set; }
 
         //Navigation Properties
         public AppUser Requester { get; set; }

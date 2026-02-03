@@ -1,6 +1,4 @@
-﻿using Daira.Application.DTOs.LikeModule;
-
-namespace Daira.Application.Response.LikeModule
+﻿namespace Daira.Application.Response.LikeModule
 {
     public class LikeResponse
     {

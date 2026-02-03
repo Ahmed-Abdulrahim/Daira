@@ -52,3 +52,6 @@ global using Daira.Application.DTOs.FollowerModule;
 global using Daira.Application.Interfaces.FollowerModule;
 global using Daira.Application.Response.FollowerModule;
 global using Daira.Infrastructure.Services.FollowService;
+global using Daira.Application.Interfaces.FriendshipModule;
+global using Daira.Application.Response.FriendshipModule;
+global using Daira.Application.DTOs.FriendshipModule;
