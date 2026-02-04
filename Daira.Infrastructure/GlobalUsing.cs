@@ -60,6 +60,14 @@ global using Daira.Application.DTOs.ConversationModule;
 global using Daira.Application.Interfaces.ConversationModule;
 global using Daira.Application.Response.ConversationModule;
 global using System.Collections.Concurrent;
+global using Daira.Application.DTOs.MessageModule;
+global using Daira.Application.Interfaces.MessageModule;
+global using Daira.Application.Response.MessageModule;
+global using Daira.Infrastructure.Services;
+global using Daira.Infrastructure.Services.ConversationService;
+global using Daira.Infrastructure.Services.FriendShipService;
+global using Daira.Infrastructure.Services.MessageService;
+
 
 
 

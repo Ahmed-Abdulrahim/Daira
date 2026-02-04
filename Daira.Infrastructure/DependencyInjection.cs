@@ -1,8 +1,4 @@
-﻿using Daira.Application.Interfaces.ConversationModule;
-using Daira.Infrastructure.Services.ConversationService;
-using Daira.Infrastructure.Services.FriendShipService;
-
-namespace Daira.Infrastructure
+﻿namespace Daira.Infrastructure
 {
     public static class DependencyInjection
     {
@@ -88,6 +84,8 @@ namespace Daira.Infrastructure
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<IFriendShipService, FriendShipService>();
             services.AddScoped<IConversationService, ConversationService>();
+            services.AddScoped<IConnectionService, ConnectionService>();
+            services.AddScoped<IMessageService, MessageService>();
 
             // Add HttpContextAccessor for CurrentUserService
             services.AddHttpContextAccessor();

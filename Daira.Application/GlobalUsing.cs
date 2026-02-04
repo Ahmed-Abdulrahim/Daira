@@ -29,6 +29,10 @@ global using Daira.Application.Response.FriendshipModule;
 global using Daira.Application.Shared;
 global using Daira.Application.DTOs.ConversationModule;
 global using Daira.Application.Response.ConversationModule;
+global using Daira.Application.DTOs.MessageModule;
+global using Daira.Application.Response.MessageModule;
+
+
 
 
 
