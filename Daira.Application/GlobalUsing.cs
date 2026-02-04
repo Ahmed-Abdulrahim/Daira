@@ -27,6 +27,8 @@ global using Daira.Application.Response.FollowerModule;
 global using Daira.Application.DTOs.FriendshipModule;
 global using Daira.Application.Response.FriendshipModule;
 global using Daira.Application.Shared;
+global using Daira.Application.DTOs.ConversationModule;
+
 
 
 

@@ -1,4 +1,6 @@
-﻿using Daira.Infrastructure.Services.FriendShipService;
+﻿using Daira.Application.Interfaces.ConversationModule;
+using Daira.Infrastructure.Services.ConversationService;
+using Daira.Infrastructure.Services.FriendShipService;
 
 namespace Daira.Infrastructure
 {
@@ -85,6 +87,7 @@ namespace Daira.Infrastructure
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<IFriendShipService, FriendShipService>();
+            services.AddScoped<IConversationService, ConversationService>();
 
             // Add HttpContextAccessor for CurrentUserService
             services.AddHttpContextAccessor();
