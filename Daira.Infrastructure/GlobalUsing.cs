@@ -59,6 +59,8 @@ global using Daira.Application.Shared;
 global using Daira.Application.DTOs.ConversationModule;
 global using Daira.Application.Interfaces.ConversationModule;
 global using Daira.Application.Response.ConversationModule;
+global using System.Collections.Concurrent;
+
 
 
 
