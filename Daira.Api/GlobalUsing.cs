@@ -43,4 +43,8 @@ global using Daira.Application.Response.ConversationModule;
 global using Daira.Application.DTOs.MessageModule;
 global using Daira.Application.Interfaces.MessageModule;
 global using Daira.Application.Response.MessageModule;
+global using Microsoft.AspNetCore.SignalR;
+global using Daira.Api.Hub;
+
+
 

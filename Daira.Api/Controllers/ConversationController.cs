@@ -1,9 +1,13 @@
-﻿namespace Daira.Api.Controllers
+﻿using Daira.Api.Hub;
+using Microsoft.AspNetCore.SignalR;
+using System.Threading;
+
+namespace Daira.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class ConversationController(IConversationService conversationService) : ControllerBase
+    public class ConversationController(IConversationService conversationService, IHubContext<ChatHub, IChatHubClient> hubContext, IConnectionService connectionService) : ControllerBase
     {
         //CreateConversation
         [HttpPost("create-conversation")]
@@ -16,6 +20,17 @@
             if (userId is null) return Unauthorized();
             var result = await conversationService.CreateAsync(createConversationRequest, userId);
             if (!result.Succeeded) return BadRequest(result);
+            foreach (var participant in result.Data!.Participants)
+            {
+                if (participant.UserId != userId)
+                {
+                    var connections = await connectionService.GetConnectionsAsync(participant.UserId);
+                    foreach (var connectionId in connections)
+                    {
+                        await hubContext.Clients.Client(connectionId).AddedToConversation(result.Data);
+                    }
+                }
+            }
             return Ok(result);
         }
 
@@ -58,6 +73,21 @@
             if (requestId is null) return Unauthorized();
             var result = await conversationService.AddParticipantAsync(id, requestId, userId);
             if (!result.Succeeded) return BadRequest(result);
+            await hubContext.Clients.Group(id.ToString()).UserJoinedConversation(id, result.Data!);
+
+            // Notify the new participant about being added
+            var connections = await connectionService.GetConnectionsAsync(userId);
+            if (connections.Any())
+            {
+                var conversationResult = await conversationService.GetByIdAsync(id, userId);
+                if (conversationResult.Succeeded)
+                {
+                    foreach (var connectionId in connections)
+                    {
+                        await hubContext.Clients.Client(connectionId).AddedToConversation(conversationResult.Data!);
+                    }
+                }
+            }
             return Ok(result);
         }
 
@@ -72,6 +102,7 @@
             if (requestId is null) return Unauthorized();
             var result = await conversationService.RemoveParticipantAsync(id, requestId, userId);
             if (!result.Succeeded) return BadRequest(result);
+            await hubContext.Clients.Group(id.ToString()).UserLeftConversation(id, userId);
             return Ok(result);
         }
 

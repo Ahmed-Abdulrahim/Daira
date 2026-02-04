@@ -1,4 +1,5 @@
 ﻿using Daira.Application.Response.ConversationModule;
+using Daira.Application.Response.ParticipantsMosule;
 
 namespace Daira.Application.Mapping
 {
@@ -10,6 +11,7 @@ namespace Daira.Application.Mapping
             CreateMap<MessageDto, Message>()
                 .ForMember(dest => dest.Sender, opt => opt.MapFrom(src => src.Sender));
             CreateMap<ConversationResponse, Conversation>().ReverseMap();
+            CreateMap<ParticipantsResponse, ParticipantDto>().ReverseMap();
         }
     }
 }

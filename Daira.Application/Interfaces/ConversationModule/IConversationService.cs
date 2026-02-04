@@ -12,9 +12,10 @@
         //Get All Conversation For User
         Task<ResultResponse<ConversationResponse>> GetUserConversationsAsync(string userId, CancellationToken cancellationToken = default);
         // Add Participant
-        Task<ResultResponse<ConversationResponse>> AddParticipantAsync(Guid conversationId, string userId, string requestingUserId, CancellationToken cancellationToken = default);
+        Task<ResultResponse<ParticipantsResponse>> AddParticipantAsync(Guid conversationId, string userId, string requestingUserId, CancellationToken cancellationToken = default);
         //RemoveParticipant
         Task<ResultResponse<ConversationResponse>> RemoveParticipantAsync(Guid conversationId, string userId, string requestingUserId, CancellationToken cancellationToken = default);
+
 
     }
 }

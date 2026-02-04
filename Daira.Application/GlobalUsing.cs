@@ -31,6 +31,8 @@ global using Daira.Application.DTOs.ConversationModule;
 global using Daira.Application.Response.ConversationModule;
 global using Daira.Application.DTOs.MessageModule;
 global using Daira.Application.Response.MessageModule;
+global using Daira.Application.Response.ParticipantsMosule;
+
 
 
 

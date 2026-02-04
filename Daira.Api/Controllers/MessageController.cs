@@ -3,7 +3,7 @@
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class MessageController(IMessageService messageService) : ControllerBase
+    public class MessageController(IMessageService messageService, IHubContext<ChatHub, IChatHubClient> hubContext) : ControllerBase
     {
         // Get Message By Id
         [HttpPost("get-message/{id}")]
@@ -44,6 +44,8 @@
             if (userId is null) return Unauthorized();
             var result = await messageService.SendMessageAsync(sendMessage, userId);
             if (!result.Succeeded) return BadRequest(result);
+            await hubContext.Clients.Group(sendMessage.ConversationId.ToString()).ReceiveMessage(result.Data!);
+
             return Ok(result);
         }
 
@@ -72,6 +74,7 @@
             if (userId is null) return Unauthorized();
             var result = await messageService.MarkConversationAsReadAsync(id, userId);
             if (!result.Succeeded) return BadRequest(result);
+            await hubContext.Clients.Group(id.ToString()).MessagesRead(id, userId);
             return Ok(result);
         }
 
