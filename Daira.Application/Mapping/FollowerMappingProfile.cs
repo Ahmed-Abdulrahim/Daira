@@ -4,7 +4,7 @@
     {
         public FollowerMappingProfile()
         {
-            CreateMap<FollowerDto, Follower>().ReverseMap();
+            CreateMap<FollowerResponse, Follower>().ReverseMap();
         }
     }
 }

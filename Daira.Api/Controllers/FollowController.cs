@@ -6,7 +6,7 @@
     {
         //Follow User
         [HttpPost("follow-user/{id}")]
-        [ProducesResponseType(typeof(FollowerResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FollowerResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> FollowUser(string id)
@@ -23,7 +23,7 @@
 
         //UnFollow User
         [HttpPost("unfollow-user/{id}")]
-        [ProducesResponseType(typeof(FollowerResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FollowerResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UnFollowUser(string id)
@@ -40,7 +40,7 @@
 
         //Get All Followers of a User
         [HttpGet("get-followers")]
-        [ProducesResponseType(typeof(FollowerResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FollowerResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetFollowers()
         {
@@ -56,7 +56,7 @@
 
         //Get All Following of a User
         [HttpGet("get-following")]
-        [ProducesResponseType(typeof(FollowerResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FollowerResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetFollowing()
         {

@@ -4,7 +4,7 @@
     {
         public CommentMappingProfile()
         {
-            CreateMap<CommentDto, Comment>().ReverseMap();
+            CreateMap<CommentResponse, Comment>().ReverseMap();
 
 
 

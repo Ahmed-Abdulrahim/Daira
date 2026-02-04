@@ -4,7 +4,7 @@
     {
         public LikeMappingProfile()
         {
-            CreateMap<LikeDto, Like>().ReverseMap();
+            CreateMap<LikeResponse, Like>().ReverseMap();
         }
     }
 }

@@ -7,7 +7,7 @@
     {
         // Create Post
         [HttpPost("create-post")]
-        [ProducesResponseType(typeof(CreatePostResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<PostResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreatePost(CreatePostDto createPostDto)
@@ -26,7 +26,7 @@
 
         //GetById
         [HttpGet("get-post/{id}")]
-        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<PostResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetById(Guid id)
@@ -38,7 +38,7 @@
 
         //update Post
         [HttpPut("update-post/{id}")]
-        [ProducesResponseType(typeof(UpdateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<PostResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdatePost(Guid id, UpdatePostDto updatePostDto)
@@ -55,7 +55,7 @@
 
         //Delete Post
         [HttpDelete("delete-post/{id}")]
-        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<PostResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeletePost(Guid id)
@@ -73,7 +73,7 @@
 
         //GetPosts for specific user
         [HttpGet("get-posts")]
-        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<PostResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPostsForSpecificUser()
@@ -90,7 +90,7 @@
 
         // Get Feed (Posts from followed users)
         [HttpGet("feed")]
-        [ProducesResponseType(typeof(PostResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<PostResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetFeed([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
@@ -107,7 +107,7 @@
 
         //Like Post
         [HttpPost("like-post/{id}")]
-        [ProducesResponseType(typeof(LikeResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<LikeResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> LikePost(Guid id)
@@ -124,7 +124,7 @@
 
         //UnLike Post
         [HttpDelete("Unlike-post/{id}")]
-        [ProducesResponseType(typeof(LikeResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<LikeResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UnLikePost(Guid id)
@@ -141,7 +141,7 @@
 
         //Get Post Likes
         [HttpGet("post-likes/{id}")]
-        [ProducesResponseType(typeof(LikeResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<LikeResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPostLikes(Guid id)

@@ -36,4 +36,5 @@ global using Daira.Application.Interfaces.FollowerModule;
 global using Daira.Application.Response.FollowerModule;
 global using Daira.Application.Interfaces.FriendshipModule;
 global using Daira.Application.Response.FriendshipModule;
+global using Daira.Application.Shared;
 

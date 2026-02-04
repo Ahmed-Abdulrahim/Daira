@@ -7,7 +7,7 @@
     {
         //GetAll  Friend Request 
         [HttpGet("GetAll-friendRequest")]
-        [ProducesResponseType(typeof(FriendshipResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FriendshipResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllFriendShip()
@@ -21,7 +21,7 @@
 
         //GetAll  Friends 
         [HttpGet("GetAll-friends")]
-        [ProducesResponseType(typeof(FriendshipResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FriendshipResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllFriends()
@@ -35,7 +35,7 @@
 
         //Send FriendRequest
         [HttpPost("request-friendship/{addresseeId}")]
-        [ProducesResponseType(typeof(FriendshipResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FriendshipResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> SendFriendRequest(string addresseeId)
@@ -49,7 +49,7 @@
 
         //Accept FriendRequest
         [HttpPut("accept-friendship/{id}")]
-        [ProducesResponseType(typeof(FriendshipResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FriendshipResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AcceptFriendShip(Guid id)
@@ -61,7 +61,7 @@
 
         //Decline Friend Request 
         [HttpPut("decline-friendship/{id}")]
-        [ProducesResponseType(typeof(FriendshipResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FriendshipResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeclineFriendRequest(Guid id)
@@ -73,7 +73,7 @@
 
         //UnFriend Friend Request 
         [HttpPost("unFriend/{id}")]
-        [ProducesResponseType(typeof(FriendshipResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<FriendshipResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UnFriend(Guid id)

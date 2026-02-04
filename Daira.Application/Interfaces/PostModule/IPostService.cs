@@ -3,26 +3,26 @@
     public interface IPostService
     {
         // Create Post
-        Task<CreatePostResponse> CreatePostAsync(string userId, CreatePostDto createPostDto);
+        Task<ResultResponse<PostResponse>> CreatePostAsync(string userId, CreatePostDto createPostDto);
         // Get Post By Id
-        Task<PostResponse> GetPostByIdAsync(Guid postId);
+        Task<ResultResponse<PostResponse>> GetPostByIdAsync(Guid postId);
         // Update Post
-        Task<UpdateResponse> UpdatePostAsync(Guid postId, string userId, UpdatePostDto updatePostDto);
+        Task<ResultResponse<PostResponse>> UpdatePostAsync(Guid postId, string userId, UpdatePostDto updatePostDto);
         // Delete Post
-        Task<PostResponse> DeletePostAsync(string usreId, Guid PostId);
+        Task<ResultResponse<PostResponse>> DeletePostAsync(string usreId, Guid PostId);
         // Get All Posts For Specific User
-        Task<PostResponse> GetAllPostForSpecificUser(string userId);
+        Task<ResultResponse<PostResponse>> GetAllPostForSpecificUser(string userId);
         // Get Feed Posts
-        Task<PostResponse> GetFeedAsync(string userId, int pageNumber = 1, int pageSize = 10);
+        Task<ResultResponse<PostResponse>> GetFeedAsync(string userId, int pageNumber = 1, int pageSize = 10);
 
         //LikePost
-        Task<LikeResponse> LikePostAsync(string userId, Guid postId);
+        Task<ResultResponse<LikeResponse>> LikePostAsync(string userId, Guid postId);
 
         //UnLikePost
-        Task<LikeResponse> UnLikePostAsync(string userId, Guid postId);
+        Task<ResultResponse<LikeResponse>> UnLikePostAsync(string userId, Guid postId);
 
         //Get Post Likes
-        Task<LikeResponse> GetPostLikesAsync(Guid postId);
+        Task<ResultResponse<LikeResponse>> GetPostLikesAsync(Guid postId);
 
     }
 }

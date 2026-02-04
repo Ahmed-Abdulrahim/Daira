@@ -4,7 +4,7 @@
     {
         public FriendShipMappingProfile()
         {
-            CreateMap<FriendshipDto, Friendship>().ReverseMap();
+            CreateMap<FriendshipResponse, Friendship>().ReverseMap();
         }
     }
 }

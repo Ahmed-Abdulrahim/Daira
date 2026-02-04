@@ -7,7 +7,9 @@
     {
         //Get Comments by Post Id
         [HttpGet("get-comments/{postId}")]
-        [ProducesResponseType(typeof(IEnumerable<CommentResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ResultResponse<CommentResponse>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCommentsByPostId(Guid postId)
         {
             var result = await commentService.GetCommentsByPostId(postId);
@@ -19,7 +21,9 @@
         }
         //Add Comment
         [HttpPost("add-comment/{id}")]
-        [ProducesResponseType(typeof(CommentResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<CommentResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddComment(Guid id, [FromBody] AddCommentDto addCommentDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -33,7 +37,9 @@
 
         //Delete Comment
         [HttpDelete("delete-comment/{id}")]
-        [ProducesResponseType(typeof(CommentResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<CommentResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteComment(Guid id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -48,7 +54,9 @@
 
         //Update Comment 
         [HttpPut("update-commnet/{id}")]
-        [ProducesResponseType(typeof(CommentResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultResponse<CommentResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateComment(Guid id, [FromBody] AddCommentDto updateCommentDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
