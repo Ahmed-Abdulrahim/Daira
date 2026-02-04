@@ -1,10 +1,8 @@
-﻿using Daira.Application.Response.ConversationModule;
-using Microsoft.EntityFrameworkCore;
-
-namespace Daira.Infrastructure.Services.ConversationService
+﻿namespace Daira.Infrastructure.Services.ConversationService
 {
     public class ConversationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, IMapper mapper, ILogger<ConversationService> logger) : IConversationService
     {
+
         //Create Conversation
         public async Task<ResultResponse<ConversationResponse>> CreateAsync(CreateConversationRequest request, string creatorId, CancellationToken cancellationToken = default)
         {
@@ -63,7 +61,6 @@ namespace Daira.Infrastructure.Services.ConversationService
 
         }
 
-
         //Get Conversation By Id
         public async Task<ResultResponse<ConversationResponse>> GetByIdAsync(Guid conversationId, string userId, CancellationToken cancellationToken = default)
         {
@@ -78,5 +75,124 @@ namespace Daira.Infrastructure.Services.ConversationService
             var mapConversation = mapper.Map<ConversationResponse>(existConversation);
             return ResultResponse<ConversationResponse>.Success(mapConversation);
         }
+
+        //Get All Conversations For User
+        public async Task<ResultResponse<ConversationResponse>> GetUserConversationsAsync(string userId, CancellationToken cancellationToken = default)
+        {
+            var spec = new ConversationSpecification(c => c.CreatedById == userId || c.Participants.Any(p => p.UserId == userId));
+            var getAllConversation = await unitOfWork.Repository<Conversation>().GetAllWithSpec(spec, cancellationToken);
+            if (!getAllConversation.Any())
+            {
+                logger.LogInformation("No Conversation Found");
+                return ResultResponse<ConversationResponse>.Success("No Conversaion Found");
+            }
+            var map = mapper.Map<List<ConversationResponse>>(getAllConversation);
+            return ResultResponse<ConversationResponse>.Success(map);
+        }
+
+        //Check if user Is In Conversation
+        public async Task<bool> IsUserInConversationAsync(Guid conversationId, string userId, CancellationToken cancellationToken = default)
+        {
+            var spec = new ConversationSpecification(c => c.Id == conversationId && c.Participants.Any(c => c.UserId == userId));
+            var getConversation = await unitOfWork.Repository<Conversation>().GetByIdSpecTracked(spec, cancellationToken);
+            if (getConversation is null)
+            {
+                logger.LogInformation("User is not in this Conversation");
+                return false;
+            }
+            return true;
+
+        }
+
+        //Add Participant
+        public async Task<ResultResponse<ConversationResponse>> AddParticipantAsync(Guid conversationId, string userId, string requestingUserId, CancellationToken cancellationToken = default)
+        {
+            var spec = new ConversationSpecification(c => c.Id == conversationId);
+            var getConversation = await unitOfWork.Repository<Conversation>().GetByIdSpecTracked(spec, cancellationToken);
+            if (getConversation is null)
+            {
+                logger.LogWarning("Conversation is not Found");
+                return ResultResponse<ConversationResponse>.Failure("Conversation Not Found");
+            }
+            if (getConversation.Type == ConversationType.Direct)
+            {
+                logger.LogWarning("Cannot Add participants to Direct Chat");
+                return ResultResponse<ConversationResponse>.Failure("Cannot Add participants to Direct Chat");
+            }
+            var paricipant = await IsUserInConversationAsync(getConversation.Id, requestingUserId, cancellationToken);
+            if (!paricipant)
+            {
+                logger.LogWarning("You are not a participant in this conversation");
+                return ResultResponse<ConversationResponse>.Failure("You are not a participant in this conversation");
+            }
+            var existUser = await userManager.FindByIdAsync(userId);
+            if (existUser is null)
+            {
+                logger.LogWarning("User Not Found");
+                return ResultResponse<ConversationResponse>.Failure("User not Found");
+            }
+            var addParticipants = await AddParticipantInConversation(conversationId, userId, cancellationToken);
+            if (!addParticipants)
+            {
+                logger.LogWarning("User is already a participant in this conversation");
+                return ResultResponse<ConversationResponse>.Failure("User is already a participant in this conversation");
+            }
+            var map = mapper.Map<ConversationResponse>(addParticipants);
+            return ResultResponse<ConversationResponse>.Success(map);
+        }
+
+        //RemoveParticipant
+        public async Task<ResultResponse<ConversationResponse>> RemoveParticipantAsync(Guid conversationId, string userId, string requestingUserId, CancellationToken cancellationToken = default)
+        {
+            var spec = new ConversationSpecification(c => c.Id == conversationId);
+            var existConversation = await unitOfWork.Repository<Conversation>().GetByIdSpecTracked(spec, cancellationToken);
+            if (existConversation is null)
+            {
+                logger.LogWarning("Conversation not found");
+                return ResultResponse<ConversationResponse>.Failure("Conversation not found");
+            }
+            if (existConversation.Type == ConversationType.Direct)
+            {
+                logger.LogWarning("Cannot remove participants from a direct conversation");
+                return ResultResponse<ConversationResponse>.Failure("Cannot remove participants from a direct conversation");
+            }
+            var paricipant = await IsUserInConversationAsync(existConversation.Id, requestingUserId, cancellationToken);
+            if (!paricipant)
+            {
+                logger.LogWarning("You are not a participant in this conversation");
+                return ResultResponse<ConversationResponse>.Failure("You are not a participant in this conversation");
+            }
+            var checkSpec = new ConversationParticipantSpecification(c => c.ConversationId == conversationId && c.UserId == userId);
+            var checkParticipants = await unitOfWork.Repository<ConversationParticipant>().GetByIdSpecTracked(checkSpec, cancellationToken);
+            if (checkParticipants is null)
+            {
+                logger.LogWarning("User is not a participant in this conversation");
+                return ResultResponse<ConversationResponse>.Failure("User is not a participant in this conversation");
+            }
+            unitOfWork.Repository<ConversationParticipant>().Delete(checkParticipants);
+            await unitOfWork.CommitAsync();
+            return ResultResponse<ConversationResponse>.Success();
+
+        }
+
+        //Privat Method
+        private async Task<bool> AddParticipantInConversation(Guid conversationId, string userId, CancellationToken cancellationToken)
+        {
+            var spec = new ConversationSpecification(c => c.Id == conversationId && c.Participants.Any(p => p.UserId == userId));
+            var checkParticipants = await unitOfWork.Repository<Conversation>().GetByIdSpecTracked(spec, cancellationToken);
+            if (checkParticipants is not null) return false;
+            var addParticipants = new ConversationParticipant
+            {
+                Id = Guid.NewGuid(),
+                ConversationId = conversationId,
+                UserId = userId,
+                JoinedAt = DateTime.UtcNow
+            };
+            await unitOfWork.Repository<ConversationParticipant>().AddAsync(addParticipants);
+            await unitOfWork.CommitAsync();
+            return true;
+        }
+
+
     }
 }

@@ -5,7 +5,7 @@
         Task AddAsync(T entity);
         Task AddRangeAsync(IEnumerable<T> entities);
         Task<T> GetByIdSpec(ISpecefication<T> spec);
-        Task<IEnumerable<T>> GetAllWithSpec(ISpecefication<T> spec);
+        Task<IEnumerable<T>> GetAllWithSpec(ISpecefication<T> spec, CancellationToken cancellationToken = default);
         public Task<T> GetByIdTrackedAsync(Guid id);
         public Task<T> GetByIdSpecTracked(ISpecefication<T> spec, CancellationToken cancellationToken = default);
         void Update(T entity);
