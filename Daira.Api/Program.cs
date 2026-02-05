@@ -37,15 +37,28 @@ namespace Daira.Api
                           .AllowAnyHeader();
                 });
             });
+            /* builder.WebHost.ConfigureKestrel(serverOptions =>
+             {
+                 serverOptions.ListenAnyIP(5000);
+
+             });*/
 
             var app = builder.Build();
-            await app.ApplyMigrationWithSeed();
+            if (app.Environment.IsDevelopment())
+            {
+                await app.ApplyMigrationWithSeed();
+            }
             app.UseGlobalExceptionHandler();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            }
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
             }
 
 
@@ -56,6 +69,7 @@ namespace Daira.Api
 
 
             app.MapControllers();
+            app.UseCors("AllowSpecificOrigins");
             app.MapHub<ChatHub>("/chatHub");
 
 
