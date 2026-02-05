@@ -24,6 +24,8 @@
                 UserId = userId,
                 CreatedAt = DateTime.UtcNow
             };
+            checkpost.CommentsCount += 1;
+            unitOfWork.Repository<Post>().Update(checkpost);
             await unitOfWork.Repository<Comment>().AddAsync(newComment);
             await unitOfWork.CommitAsync();
             var mapComment = mapper.Map<CommentResponse>(newComment);
@@ -33,7 +35,7 @@
         //DeleteComment
         public async Task<ResultResponse<CommentResponse>> DeleteComment(string userId, Guid commentId)
         {
-            var checkCommnet = await unitOfWork.Repository<Comment>().GetByIdAsync(commentId);
+            var checkCommnet = await unitOfWork.Repository<Comment>().GetByIdTrackedAsync(commentId);
             if (checkCommnet is null)
             {
                 logger.LogWarning("Comment with ID {CommentId} not found when deleting by user {UserId}.", commentId, userId);
@@ -43,6 +45,12 @@
             {
                 logger.LogWarning("User with ID {UserId} attempted to delete comment {CommentId} without permission.", userId, commentId);
                 return ResultResponse<CommentResponse>.Failure("You do not have permission to delete this comment.");
+            }
+            var getpost = await unitOfWork.Repository<Post>().GetByIdAsync(checkCommnet.PostId);
+            if (getpost != null)
+            {
+                getpost.CommentsCount -= 1;
+                unitOfWork.Repository<Post>().Update(getpost);
             }
             var mapDeletedComment = mapper.Map<CommentResponse>(checkCommnet);
             unitOfWork.Repository<Comment>().Delete(checkCommnet);

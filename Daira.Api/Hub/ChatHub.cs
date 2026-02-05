@@ -1,7 +1,7 @@
 ﻿namespace Daira.Api.Hub
 {
     [Authorize]
-    public class ChatHub(IConversationService conversationService, IMessageService messageService, IConnectionService connectionService,
+    public class ChatHub(IConversationService conversationService, IMessageService messageService, INotificationService notificationService, IConnectionService connectionService,
             ILogger<ChatHub> logger) : Hub<IChatHubClient>
     {
         private string UserId => Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value
@@ -118,5 +118,34 @@
                 await Clients.OthersInGroup(conversationId.ToString()).MessagesRead(conversationId, userId);
             }
         }
+
+        // Mark Notification As Read
+        public async Task MarkNotificationAsRead(Guid notificationId)
+        {
+            var userId = UserId;
+            var result = await notificationService.MarkAsReadAsync(notificationId, userId);
+
+            if (!result.Succeeded)
+            {
+                throw new HubException(result.Message ?? "Failed to mark notification as read");
+            }
+
+            logger.LogInformation("User {UserId} marked notification {NotificationId} as read via hub", userId, notificationId);
+        }
+
+        // Mark All Notifications As Read
+        public async Task MarkAllNotificationsAsRead()
+        {
+            var userId = UserId;
+            var result = await notificationService.MarkAllAsReadAsync(userId);
+
+            if (!result.Succeeded)
+            {
+                throw new HubException(result.Message ?? "Failed to mark all notifications as read");
+            }
+
+            logger.LogInformation("User {UserId} marked all notifications as read via hub", userId);
+        }
+
     }
 }

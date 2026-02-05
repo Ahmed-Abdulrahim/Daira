@@ -1,8 +1,4 @@
-﻿using Daira.Api.Hub;
-using Microsoft.AspNetCore.SignalR;
-using System.Threading;
-
-namespace Daira.Api.Controllers
+﻿namespace Daira.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

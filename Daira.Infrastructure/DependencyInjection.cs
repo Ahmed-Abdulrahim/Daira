@@ -1,4 +1,6 @@
-﻿namespace Daira.Infrastructure
+﻿using Daira.Infrastructure.Services.NotificationService;
+
+namespace Daira.Infrastructure
 {
     public static class DependencyInjection
     {
@@ -86,6 +88,7 @@
             services.AddScoped<IConversationService, ConversationService>();
             services.AddScoped<IConnectionService, ConnectionService>();
             services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             // Add HttpContextAccessor for CurrentUserService
             services.AddHttpContextAccessor();

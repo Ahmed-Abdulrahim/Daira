@@ -1,6 +1,4 @@
-﻿using Daira.Application.Response.ParticipantsMosule;
-
-namespace Daira.Application.Interfaces
+﻿namespace Daira.Application.Interfaces
 {
     public interface IChatHubClient
     {
@@ -13,5 +11,10 @@ namespace Daira.Application.Interfaces
         Task UserOffline(string userId);
         Task MessagesRead(Guid conversationId, string userId);
         Task AddedToConversation(ConversationResponse conversation);
+
+        Task ReceiveNotification(NotificationResponse notification);
+        Task NotificationRead(Guid notificationId);
+        Task AllNotificationsRead();
+        Task UnreadNotificationCount(int count);
     }
 }

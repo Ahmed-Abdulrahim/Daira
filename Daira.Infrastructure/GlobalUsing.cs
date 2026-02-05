@@ -67,6 +67,9 @@ global using Daira.Infrastructure.Services;
 global using Daira.Infrastructure.Services.ConversationService;
 global using Daira.Infrastructure.Services.FriendShipService;
 global using Daira.Infrastructure.Services.MessageService;
+global using Daira.Application.DTOs.NotifcationModule;
+global using Daira.Application.Interfaces.NotificationModule;
+global using Daira.Application.Response.NotificationModule;
 
 
 

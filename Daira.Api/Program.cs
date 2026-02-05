@@ -27,6 +27,17 @@ namespace Daira.Api
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddAuthorizeSwaggerAsync(builder.Configuration);
             builder.Services.AddApplicationServices();
+            builder.Services.AddSignalR();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
+
             var app = builder.Build();
             await app.ApplyMigrationWithSeed();
             app.UseGlobalExceptionHandler();
@@ -37,6 +48,7 @@ namespace Daira.Api
                 app.UseSwaggerUI();
             }
 
+
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
@@ -44,6 +56,8 @@ namespace Daira.Api
 
 
             app.MapControllers();
+            app.MapHub<ChatHub>("/chatHub");
+
 
             app.Run();
         }

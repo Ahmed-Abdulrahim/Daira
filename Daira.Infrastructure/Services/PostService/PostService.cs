@@ -164,6 +164,7 @@
                 UserId = userId,
                 CreatedAt = DateTime.UtcNow
             };
+            unitOfWork.Repository<Post>().Update(existPost);
             await unitOfWork.Repository<Like>().AddAsync(like);
             await unitOfWork.CommitAsync();
             var likeDto = mapper.Map<LikeResponse>(like);
@@ -188,6 +189,7 @@
                 return ResultResponse<LikeResponse>.Failure("You have not liked this post ");
             }
             existPost.LikesCount -= 1;
+            unitOfWork.Repository<Post>().Update(existPost);
             unitOfWork.Repository<Like>().Delete(existLike);
             await unitOfWork.CommitAsync();
             logger.LogInformation("User {UserId} unliked post {PostId} successfully", userId, postId);

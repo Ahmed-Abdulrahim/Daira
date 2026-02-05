@@ -45,6 +45,12 @@ global using Daira.Application.Interfaces.MessageModule;
 global using Daira.Application.Response.MessageModule;
 global using Microsoft.AspNetCore.SignalR;
 global using Daira.Api.Hub;
+global using Daira.Application.Interfaces.NotificationModule;
+global using Daira.Application.Response.NotificationModule;
+global using Daira.Application.DTOs.NotifcationModule;
+
+
+
 
 
 
